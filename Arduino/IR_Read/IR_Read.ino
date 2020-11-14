@@ -48,13 +48,16 @@ Origin
 
 #include <Wire.h>
 #include <Adafruit_MLX90614.h>
-char *typeName[]={"Object","Ambient"};
+char *typeName[]={"Object","Ambient", "Calculated Object Celsius", "Calculated Object Fahrenheit"};
 
+float prev_val=0;
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 void setup() {
   Serial.begin(9600);
-
+  pinMode(8,INPUT);
+  pinMode(9,OUTPUT);
+  digitalWrite(9, HIGH);
   Serial.println("Robojax MLX90614 test");  
 
   mlx.begin();  
@@ -67,6 +70,8 @@ void loop() {
   
   printTemp('F');  
   printTemp('G'); 
+  printTemp('R');
+  printTemp('S');
   if( getTemp('C')>40)
   {
     //do something here
@@ -76,7 +81,7 @@ void loop() {
   printTemp('L');  
   Serial.println("======");
 
-  delay(3000);
+  delay(1500);
   //Robojax Example for MLX90614
 }
 
@@ -102,9 +107,19 @@ void loop() {
 float getTemp(char type)
 {
    // Robojax.com MLX90614 Code
-  float value;
+    float value;
+    float ratio = 0.5;
     float tempObjec = mlx.readObjectTempC();//in C object
     float tempAmbient = mlx.readAmbientTempC();
+    //float areaCone = 1.419; // in meteres
+    float bodyTemp;
+   Serial.println(digitalRead(8));
+    if (digitalRead(8))
+    {bodyTemp = ((tempObjec) - ((1-ratio)*(prev_val)))/ (ratio);}
+    else
+    {bodyTemp = tempObjec;}
+    float bodyTempF = ((mlx.readObjectTempF()) - ((1-ratio)*(mlx.readAmbientTempF())))/ (ratio); 
+    
    if(type =='F')
    {
     value = mlx.readObjectTempF(); //Fah. Object
@@ -124,6 +139,17 @@ float getTemp(char type)
    {
     value = tempAmbient;
    }
+   else if(type == 'R') // Calculated object temperature in Celsius
+   {
+    value = bodyTemp;
+   }
+   else if(type == 'S') // Calculated object temperature in Fahrenheit
+   {
+    value = bodyTempF;
+   }
+   
+   if (!digitalRead(8))
+   {prev_val=tempObjec;}
    return value;
     // Robojax.com MLX90614 Code
 }//getTemp
@@ -139,6 +165,9 @@ float getTemp(char type)
  *     
  *     F = Object Fahrenheit
  *     G = Ambient in Fahrenheit
+ *     
+ *     R = Calculated Object in Celsius
+ *     S = Calculated Object in Fahrenheit
 
  * @return prints temperature value in serial monitor
  * Usage: to get Fahrenheit type: getTemp('F')
@@ -197,6 +226,22 @@ void printTemp(char type)
     Serial.print(tmp);  
     Serial.print("°");       
     Serial.println(" K");
+  }
+  else if(type == 'R')
+  {
+    Serial.print(typeName[2]);
+    Serial.print(" ");     
+    Serial.print(tmp);
+    Serial.print("°");      
+    Serial.println("C");
+  }
+  else if(type == 'S')
+  {
+    Serial.print(typeName[3]);
+    Serial.print(" ");     
+    Serial.print(tmp);
+    Serial.print("°");      
+    Serial.println("F");
   }
 
 // Robojax.com MLX90614 Code
