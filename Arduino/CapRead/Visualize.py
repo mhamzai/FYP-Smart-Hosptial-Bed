@@ -7,11 +7,14 @@ import serial
 # Create figure for plotting
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
-ser = serial.Serial('COM6', 9600)
+ser = serial.Serial('COM7', 9600)
+extra = []
+
+initial = [[0,0,0],[0,0,0], [0,0,0],[0,0,0]]
 
 firstTime = True
 
-def show_values(pc, fmt="E%d = %.2f", **kw):
+def show_values(pc, fmt="E%d = %.2f\nDiff = %.2f\n%s", **kw):
     '''
     Heatmap with text in each cell with matplotlib's pyplot
     Source: http://stackoverflow.com/a/25074150/395857 
@@ -20,13 +23,16 @@ def show_values(pc, fmt="E%d = %.2f", **kw):
     pc.update_scalarmappable()
     ax = pc.axes
     Elist = [1,2,3,4,5,6,7,8,9,10,11,12]
-    for p, color, value, E in zip(pc.get_paths(), pc.get_facecolors(), pc.get_array(), Elist):
+    for p, color, diff, E in zip(pc.get_paths(), pc.get_facecolors(), pc.get_array(), Elist):
         x, y = p.vertices[:-2, :].mean(0)
         if np.all(color[:3] > 0.5):
             color = (0.0, 0.0, 0.0)
         else:
             color = (1.0, 1.0, 1.0)
-        ax.text(x, y, fmt % (E, value), ha="center", va="center", color=color, **kw)
+        
+        val, extra[E-1] = extra[E-1].split('(')
+        extra[E-1] = extra[E-1][ : extra[E-1].find("-")] + 'uA' + extra[E-1][extra[E-1].find("-") : extra[E-1].find(")")] + 'uS'
+        ax.text(x, y, fmt % (E, float(val), diff, extra[E-1]), ha="center", va="center", color=color, **kw)
 
 def cm2inch(*tupl):
     '''
@@ -46,14 +52,14 @@ def heatmap(AUC, title, xlabel, ylabel, xticklabels, yticklabels):
     - http://stackoverflow.com/a/16124677/395857 
     - http://stackoverflow.com/a/25074150/395857
     '''
-    global ax, fig , firstTime
+    global ax, fig , firstTime, initial
     fig.tight_layout()
     ax.clear()
 
     # Plot it out
     MAX = np.max(AUC)
     MIN = np.min(AUC)
-    c = ax.pcolor(AUC, edgecolors='k', linestyle= 'dashed', linewidths=0.2, cmap='magma', vmin=500.0, vmax=750.0)
+    c = ax.pcolor( initial -AUC, edgecolors='k', linestyle= 'dashed', linewidths=0.2, cmap='gray_r', vmin=0.0, vmax=1023.0)
 
     # put the major ticks at the middle of each cell
     ax.set_yticks(np.arange(AUC.shape[0]) + 0.5, minor=False)
@@ -72,6 +78,7 @@ def heatmap(AUC, title, xlabel, ylabel, xticklabels, yticklabels):
     
     # Add color bar
     if(firstTime):
+        initial = AUC
         plt.colorbar(c)
         firstTime = False
 
@@ -79,22 +86,25 @@ def heatmap(AUC, title, xlabel, ylabel, xticklabels, yticklabels):
     show_values(c)
 
     # resize 
-    fig = plt.gcf()
-    fig.set_size_inches(cm2inch(15, 15))
+    #fig = plt.gcf()
+    #fig.set_size_inches(cm2inch(15, 15))
     
 
 
 def readSerial():
     global serial
     try:
-        
+        global extra
         # Read and record the data
         data =[]                       # empty list to store the data
-        
+        extra = []
         b = ser.readline()         # read a byte string
         string_n = b.decode()  # decode byte string into Unicode  
         string = string_n.rstrip() # remove \n and \r
-        data = string.split("\t")
+        extra = string.split("\t")
+        
+        for e in extra:
+            data.append(e.split('(')[0])
 
         #return np.array([data[:2]], dtype='float').reshape(1,2)   
         return np.array([data], dtype='float').reshape(4,3)
@@ -117,6 +127,6 @@ def animate(i):
   
 
 # Set up plot to call animate() function periodically
-ani = animation.FuncAnimation(fig, animate, interval=50)
+ani = animation.FuncAnimation(fig, animate, interval=300)
 plt.show()
 ser.close()
