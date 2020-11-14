@@ -1,62 +1,21 @@
-/*************************************************** 
-  This is a library example for the MLX90614 Temp Sensor
-Original Library and code source: https://github.com/adafruit/Adafruit-MLX90614-Library
-
- The code has been updated. I have added two funcitons. Also the Kelivin
- value added into the C and F units.
- 1-First function to print the temperature on Serial Monitor
- 2-2nd Funciton return the temperature so it can be used for Display or other purpose
- 
-   Want to get full explanation of this code
-  and need wiring diagram? 
-  Purchase My Arduino course on Udemy.com http://robojax.com/L/?id=62
- * 
- * Watch video instructions for this code: https://youtu.be/cFDSqiEIunw
-updated/written by Ahmad Shamshiri on Mar 30, 2020 at 21:51 
- 
- * in Ajax, Ontario, Canada. www.robojax.com
- * 
-
- * Get this code and other Arduino codes from Robojax.com
-Learn Arduino step by step in structured course with all material, wiring diagram and library
-all in once place. Purchase My course on Udemy.com http://robojax.com/L/?id=62
-
-If you found this tutorial helpful, please support me so I can continue creating 
-content like this. You can support me on Patreon http://robojax.com/L/?id=63
-
-or make donation using PayPal http://robojax.com/L/?id=64
-
- *  * This code is "AS IS" without warranty or liability. Free to be used as long as you keep this note intact.* 
- * This code has been download from Robojax.com
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-Origin
-  Written by Limor Fried/Ladyada for Adafruit Industries.  
-  BSD license, all text above must be included in any redistribution
- ****************************************************/
-
 #include <Wire.h>
 #include <Adafruit_MLX90614.h>
-char *typeName[]={"Object","Ambient", "Calculated Object Celsius", "Calculated Object Fahrenheit"};
+const int pingPin = 11; // Trigger Pin of Ultrasonic Sensor
+const int echoPin = 10; // Echo Pin of Ultrasonic Sensor
 
+char *typeName[]={"Object","Ambient", "Calculated Object Celsius", "Calculated Object Fahrenheit"};
+double microsecondsToCentimeters(long microseconds);
+float patientArea = 0;
 float prev_val=0;
+double area= 0;
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 void setup() {
   Serial.begin(9600);
   pinMode(8,INPUT);
   pinMode(9,OUTPUT);
+  pinMode(pingPin, OUTPUT);
+  pinMode(echoPin, INPUT);
   digitalWrite(9, HIGH);
   Serial.println("Robojax MLX90614 test");  
 
@@ -65,6 +24,19 @@ void setup() {
 
 void loop() {
   //Robojax Example for MLX90614
+  // Clears the trigPin
+  digitalWrite(pingPin, LOW);
+  delayMicroseconds(2);
+// Sets the pingPin on HIGH state for 10 micro seconds
+  digitalWrite(pingPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pingPin, LOW);
+  float duration = pulseIn(echoPin, HIGH);
+  double cm = microsecondsToCentimeters(duration);
+  double meters = cm/100;
+  area = 3.14159265358979 * (meters*meters);
+  Serial.print("Area is : ");
+  Serial.println(area);
   printTemp('C');
   printTemp('D');
   
@@ -81,7 +53,7 @@ void loop() {
   printTemp('L');  
   Serial.println("======");
 
-  delay(1500);
+  delay(5000);
   //Robojax Example for MLX90614
 }
 
@@ -108,12 +80,11 @@ float getTemp(char type)
 {
    // Robojax.com MLX90614 Code
     float value;
-    float ratio = 0.5;
+    float ratio = patientArea / area;
     float tempObjec = mlx.readObjectTempC();//in C object
     float tempAmbient = mlx.readAmbientTempC();
     //float areaCone = 1.419; // in meteres
     float bodyTemp;
-   Serial.println(digitalRead(8));
     if (digitalRead(8))
     {bodyTemp = ((tempObjec) - ((1-ratio)*(prev_val)))/ (ratio);}
     else
@@ -243,8 +214,11 @@ void printTemp(char type)
     Serial.print("°");      
     Serial.println("F");
   }
+  
+}
 
-// Robojax.com MLX90614 Code
-}//printTemp(char type)
+double microsecondsToCentimeters(long microseconds) {
+   return microseconds / 29 / 2;
+}
 
  
