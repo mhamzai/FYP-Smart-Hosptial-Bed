@@ -2,15 +2,17 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import serial
+#import numpy.random as random
 
 
 # Create figure for plotting
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
-ser = serial.Serial('COM7', 9600)
+ser = serial.Serial('COM4', 9600)
 extra = []
+c = []
 
-initial = [[0,0,0],[0,0,0], [0,0,0],[0,0,0]]
+initial = [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
 
 firstTime = True
 
@@ -34,78 +36,67 @@ def show_values(pc, fmt="E%d = %.2f\nDiff = %.2f\n%s", **kw):
         extra[E-1] = extra[E-1][ : extra[E-1].find("-")] + 'uA' + extra[E-1][extra[E-1].find("-") : extra[E-1].find(")")] + 'uS'
         ax.text(x, y, fmt % (E, float(val), diff, extra[E-1]), ha="center", va="center", color=color, **kw)
 
-def cm2inch(*tupl):
-    '''
-    Specify figure size in centimeter in matplotlib
-    Source: http://stackoverflow.com/a/22787457/395857
-    By gns-ank
-    '''
-    inch = 2.54
-    if type(tupl[0]) == tuple:
-        return tuple(i/inch for i in tupl[0])
-    else:
-        return tuple(i/inch for i in tupl)
-
-def heatmap(AUC, title, xlabel, ylabel, xticklabels, yticklabels):
+def heatmap(AUC):
     '''
     Inspired by:
     - http://stackoverflow.com/a/16124677/395857 
     - http://stackoverflow.com/a/25074150/395857
     '''
-    global ax, fig , firstTime, initial
-    fig.tight_layout()
+    global ax, fig , firstTime, initial, c
+    
+    if(firstTime):
+        x_axis_size = AUC.shape[1]
+        y_axis_size = AUC.shape[0]
+        title = "MPR121 data"
+        xlabel= "ROW"
+        ylabel="COL"
+        xticklabels = range(1, x_axis_size+1) # could be text
+        yticklabels = range(1, y_axis_size+1) # could be text 
+        fig.tight_layout()
     ax.clear()
 
     # Plot it out
-    MAX = np.max(AUC)
-    MIN = np.min(AUC)
-    c = ax.pcolor( initial -AUC, edgecolors='k', linestyle= 'dashed', linewidths=0.2, cmap='gray_r', vmin=0.0, vmax=1023.0)
-
-    # put the major ticks at the middle of each cell
-    ax.set_yticks(np.arange(AUC.shape[0]) + 0.5, minor=False)
-    ax.set_xticks(np.arange(AUC.shape[1]) + 0.5, minor=False)
-
-    # set tick labels
-    ax.set_xticklabels(np.arange(1,AUC.shape[1]+1), minor=False)
-    ax.set_xticklabels(xticklabels, minor=False)
-    ax.set_yticklabels(yticklabels, minor=False)
-
-    # set title and x/y labels
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    ax.invert_yaxis()  
+#     if(firstTime):
+    c = ax.pcolor( initial-AUC, edgecolors='k', linestyle= 'dashed', linewidths=0.2, cmap='magma_r', vmin=0.0, vmax=511.0)
+#     else:
+#         c.set_data(AUC)
     
     # Add color bar
     if(firstTime):
+        # put the major ticks at the middle of each cell
+        ax.set_yticks(np.arange(AUC.shape[0]) + 0.5, minor=False)
+        ax.set_xticks(np.arange(AUC.shape[1]) + 0.5, minor=False)
+
+        # set tick labels
+        ax.set_xticklabels(np.arange(1,AUC.shape[1]+1), minor=False)
+        ax.set_xticklabels(xticklabels, minor=False)
+        ax.set_yticklabels(yticklabels, minor=False)
+
+        # set title and x/y labels
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
         initial = AUC
         plt.colorbar(c)
         firstTime = False
-
+        
+    ax.invert_yaxis()
+        
     # Add text in each cell 
-    show_values(c)
-
-    # resize 
-    #fig = plt.gcf()
-    #fig.set_size_inches(cm2inch(15, 15))
-    
-
+    show_values(c)    
 
 def readSerial():
     global serial
+    global extra
     try:
-        global extra
         # Read and record the data
         data =[]                       # empty list to store the data
-        extra = []
-        b = ser.readline()         # read a byte string
-        string_n = b.decode()  # decode byte string into Unicode  
-        string = string_n.rstrip() # remove \n and \r
-        extra = string.split("\t")
-        
+        extra = ser.readline().decode().rstrip().split("\t")
+#         extra = [str(random.randint(0, 1000)) + '(55-0.50)', str(random.randint(0, 1000)) + '(54-0.50)', str(random.randint(0, 1000)) + '(52-0.50)', str(random.randint(0, 1000)) + '(51-0.50)', str(random.randint(0, 1000)) + '(51-0.50)', str(random.randint(0, 1000)) + '(51-0.50)', str(random.randint(0, 1000)) + '(51-0.50)', str(random.randint(0, 1000)) + '(50-0.50)', str(random.randint(0, 1000)) + '(52-0.50)', str(random.randint(0, 1000)) + '(54-0.50)', str(random.randint(0, 1000)) + '(55-0.50)', str(random.randint(0, 1000)) + '(57-0.50)']
+    
         for e in extra:
             data.append(e.split('(')[0])
-
+    
         #return np.array([data[:2]], dtype='float').reshape(1,2)   
         return np.array([data], dtype='float').reshape(4,3)
     except:
@@ -113,20 +104,12 @@ def readSerial():
 
 def animate(i):
 
-    data = readSerial()
-    #data = np.random.randint(0,1023,(4,3))##
-
-    x_axis_size = data.shape[1]
-    y_axis_size = data.shape[0]
-    title = "MPR121 data"
-    xlabel= "ROW"
-    ylabel="COL"
-    xticklabels = range(1, x_axis_size+1) # could be text
-    yticklabels = range(1, y_axis_size+1) # could be text   
-    heatmap(data, title, xlabel, ylabel, xticklabels, yticklabels)
+    data = readSerial()  
+    heatmap(data)
+    return c
   
 
 # Set up plot to call animate() function periodically
-ani = animation.FuncAnimation(fig, animate, interval=300)
+ani = animation.FuncAnimation(fig, animate, frames=10, interval=300)
 plt.show()
 ser.close()
