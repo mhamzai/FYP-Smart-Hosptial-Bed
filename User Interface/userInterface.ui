@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.0">
+  <object class="ttk.Frame" id="frame_1">
+    <property name="cursor">based_arrow_up</property>
+    <property name="height">768</property>
+    <property name="width">1366</property>
+    <layout manager="place">
+      <property name="anchor">nw</property>
+      <property name="height">768</property>
+      <property name="width">1366</property>
+      <property name="x">0</property>
+      <property name="y">0</property>
+    </layout>
+    <child>
+      <object class="tk.Canvas" id="canvas_1_1_1">
+        <property name="background">#000000</property>
+        <property name="confine">true</property>
+        <property name="height">768</property>
+        <property name="relief">raised</property>
+        <property name="width">1366</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="height">768</property>
+          <property name="width">1366</property>
+          <property name="x">0</property>
+          <property name="y">0</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Frame" id="frame_1_1">
+        <property name="height">600</property>
+        <property name="width">450</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="height">600</property>
+          <property name="width">450</property>
+          <property name="x">84</property>
+          <property name="y">84</property>
+        </layout>
+        <child>
+          <object class="tk.Canvas" id="canvas_1_1">
+            <property name="background">#800000</property>
+            <property name="confine">true</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">0</property>
+              <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_3_2">
+            <property name="background">#800000</property>
+            <property name="cursor">arrow</property>
+            <property name="height">150</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">150</property>
+              <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_4_3">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">300</property>
+              <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_6_4">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">150</property>
+              <property name="y">150</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_7_5">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">300</property>
+              <property name="y">150</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_8_6">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">0</property>
+              <property name="y">300</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_9_7">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="takefocus">false</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">150</property>
+              <property name="y">300</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_10_8">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">300</property>
+              <property name="y">300</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_11_9">
+            <property name="background">#800000</property>
+            <property name="cursor">arrow</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">0</property>
+              <property name="y">450</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_12_10">
+            <property name="background">#800000</property>
+            <property name="cursor">arrow</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">150</property>
+              <property name="y">450</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_14_11">
+            <property name="background">#800000</property>
+            <property name="confine">false</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">300</property>
+              <property name="y">450</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Canvas" id="canvas_5_12">
+            <property name="background">#800000</property>
+            <property name="height">150</property>
+            <property name="relief">flat</property>
+            <property name="width">150</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">150</property>
+              <property name="width">150</property>
+              <property name="x">0</property>
+              <property name="y">150</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
