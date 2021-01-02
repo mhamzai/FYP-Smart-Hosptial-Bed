@@ -259,8 +259,8 @@ void receiveEvent(int howMany)
     i2cData += Wire.read();
     i2cData += (char)Wire.read();// receive byte as a character
   }
- /* if ((char)Wire.read() != '>')
-  {serialRead = ""; return;} */
+  if ((char)Wire.read() != '>')
+  {serialRead = ""; return;}
   //Serial.print("gen str ==>> ");Serial.println(i2cData);
  serialRead = i2cData;
 }
