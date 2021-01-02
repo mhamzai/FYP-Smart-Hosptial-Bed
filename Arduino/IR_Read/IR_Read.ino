@@ -11,30 +11,23 @@ double microsecondsToCentimeters(long microseconds);
 float patientArea = -1;
 float prev_val = 0;
 double area = 0;
+String serialRead = "";
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 void setup() {
   Serial.begin(9600);
-  Serial1.begin(115200);
   pinMode(8, INPUT);
   pinMode(9, OUTPUT);
   pinMode(pingPin, OUTPUT);
   pinMode(echoPin, INPUT);
   digitalWrite(9, HIGH);
   Serial.println("Robojax MLX90614 test");
-
+  Wire.begin(9);                // join i2c bus with address #4
+  Wire.onReceive(receiveEvent); // register event
   mlx.begin();
 }
 
 void loop() {
-  //Robojax Example for MLX90614
-  // Clears the trigPin
-
-  while (patientArea == -1)
-  {
-    patientArea = bodyArea();
-  }
-  //Serial1.read()
   digitalWrite(pingPin, LOW);
   delayMicroseconds(2);
   // Sets the pingPin on HIGH state for 10 micro seconds
@@ -45,8 +38,19 @@ void loop() {
   double cm = microsecondsToCentimeters(duration);
   double meters = cm / 100;
   area = 3.14159265358979 * (meters * meters);
-  Serial.print("Area is : ");
+  Serial.print("Sensor Area is : ");
   Serial.println(area);
+  patientArea = bodyArea();
+  if (patientArea == -1)
+  {
+    Serial.println("no patient area");
+    delay(1000);
+    //return;
+  }
+  else 
+  {Serial.print("patient area = ");
+    Serial.println(patientArea);  
+  }
   printTemp('C');
   printTemp('D');
 
@@ -242,35 +246,40 @@ void SendData(double calcBodyTemp)
   // send data to machine most probably Raspberry
 }
 
+void receiveEvent(int howMany)
+{
+  //Serial.println("something came here!");
+  String i2cData = "";
+  if ((char)Wire.read() != '<')
+  {serialRead == i2cData;
+    return;
+  }
+  while(1 < Wire.available()) // loop through all but the last
+  {
+    i2cData += Wire.read();
+    i2cData += (char)Wire.read();// receive byte as a character
+  }
+ /* if ((char)Wire.read() != '>')
+  {serialRead = ""; return;} */
+  //Serial.print("gen str ==>> ");Serial.println(i2cData);
+ serialRead = i2cData;
+}
+
 float bodyArea()
 {
   float areaCal = -1;
-  String serialRead = "";
-  while (!Serial1.available())
-  { //do nothing
-  }
-  if (Serial1.read()) //verify if string is starting with telda i.e no data loss from start
+  if (serialRead != "") //verify if string is starting with telda i.e no data loss from start
   {
-
-    serialRead = Serial1.readString();
-    if (serialRead[serialRead.length() - 1] == '>')
-    {
-      //meram part
-      serialRead[serialRead.length() - 1] = NULL;
       char charRead[500];
       serialRead.toCharArray(charRead,serialRead.length());
+      Serial.println(serialRead);
       split_message(charRead);
-    }
-    else
-    {
-      return bodyArea();
-    }
   }
   else
   {
-    return bodyArea();
+    return patientArea;
   }
-  area = 0;
+  areaCal = 0;
   for (int i = 0; i < 6; i++)
   {
     if (values[i] > 60)
@@ -281,6 +290,7 @@ float bodyArea()
       areaCal += 0.5;
     }
   }
+  if (areaCal == 0){return -1;}
   areaCal = areaCal / 6;
   areaCal = areaCal * area;
   return areaCal;
@@ -288,17 +298,16 @@ float bodyArea()
 
 int split_message(char* str) {
   int word_count = 0; //number of words
-  char * item = strtok (str, " ,"); //getting first word (uses space & comma as delimeter)
+  char * item = strtok (str, ","); //getting first word (uses comma as delimeter)
 
   while (item != NULL) {
     Words[word_count] = item;
-    item = strtok (NULL, " ,"); //getting subsequence word
+    item = strtok (NULL, ","); //getting subsequence word
     word_count++;
   }
   for (int i = 0; i < 12; i++)
   {
     values[i] = atof(Words[i]);
-    Serial.println(values[i]);
   }
   return  word_count;
 }
