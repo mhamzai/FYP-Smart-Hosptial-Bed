@@ -5,7 +5,7 @@ const int echoPin = 10; // Echo Pin of Ultrasonic Sensor
 
 #define MAX_WORD_COUNT 12
 char *Words[MAX_WORD_COUNT];
-float values[MAX_WORD_COUNT];
+uint16_t values[MAX_WORD_COUNT];
 char *typeName[] = {"Object", "Ambient", "Calculated Object Celsius", "Calculated Object Fahrenheit"};
 double microsecondsToCentimeters(long microseconds);
 float patientArea = -1;
@@ -67,7 +67,7 @@ void loop() {
   printTemp('L');
   Serial.println("======");
 
-  delay(5000);
+  delay(1000);
   //Robojax Example for MLX90614
 }
 
@@ -272,7 +272,6 @@ float bodyArea()
   {
       char charRead[500];
       serialRead.toCharArray(charRead,serialRead.length());
-      Serial.println(serialRead);
       split_message(charRead);
   }
   else
@@ -307,7 +306,11 @@ int split_message(char* str) {
   }
   for (int i = 0; i < 12; i++)
   {
-    values[i] = atof(Words[i]);
+    values[i] = atoi(Words[i]);
+    values[i] = values[i] << 2;
+    Serial.print(values[i]);
+    Serial.print(",");
   }
+  Serial.println();
   return  word_count;
 }
