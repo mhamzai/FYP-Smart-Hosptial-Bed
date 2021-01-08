@@ -1,5 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import *  
+from PIL import ImageTk,Image  
 
 
 class UserinterfaceApp:
@@ -10,6 +12,10 @@ class UserinterfaceApp:
         self.canvas_1_1_1.config(background='#000000', confine='true', height='768', relief='raised')
         self.canvas_1_1_1.config(width='1366')
         self.canvas_1_1_1.place(anchor='nw', height='768', width='1366', x='0', y='0')
+        self.canvas_1_1_1.pack()      
+        self.img = ImageTk.PhotoImage(Image.open("Background.jpg"))      
+        self.canvas_1_1_1.create_image(0,0, anchor=NW, image=self.img) 
+        self.canvas_1_1_1.image = self.img  
         self.frame_1_1 = ttk.Frame(self.frame_1)
         self.canvas_1_1 = tk.Canvas(self.frame_1_1)
         self.canvas_1_1.config(background='#800000', confine='true', height='150', relief='flat')
@@ -63,24 +69,40 @@ class UserinterfaceApp:
         self.canvas_2 = tk.Canvas(self.frame_1_2_3)
         self.canvas_2.config(background='#000000', height='168', width='168')
         self.canvas_2.place(anchor='nw', height='168', width='168', x='0', y='0')
+        self.canvas_2.pack()      
+        self.img2 = ImageTk.PhotoImage(Image.open("Heartbeat.png"))      
+        self.canvas_2.create_image(8,8, anchor=NW, image=self.img2) 
+        self.canvas_2.image = self.img2
         self.frame_1_2_3.config(height='168', width='168')
         self.frame_1_2_3.place(anchor='nw', height='168', width='168', x='550', y='300')
         self.frame_1_2_3_4 = ttk.Frame(self.frame_1)
         self.canvas_2_3 = tk.Canvas(self.frame_1_2_3_4)
         self.canvas_2_3.config(background='#000000', height='168', width='168')
         self.canvas_2_3.place(anchor='nw', height='168', width='168', x='0', y='0')
+        self.canvas_2_3.pack()      
+        self.img3 = ImageTk.PhotoImage(Image.open("Temprature.png"))      
+        self.canvas_2_3.create_image(8,8, anchor=NW, image=self.img3) 
+        self.canvas_2_3.image = self.img3
         self.frame_1_2_3_4.config(height='168', width='168')
         self.frame_1_2_3_4.place(anchor='nw', height='168', width='168', x='743', y='300')
         self.frame_1_2_3_4_5 = ttk.Frame(self.frame_1)
         self.canvas_2_4 = tk.Canvas(self.frame_1_2_3_4_5)
         self.canvas_2_4.config(background='#000000', height='168', width='168')
         self.canvas_2_4.place(anchor='nw', height='168', width='168', x='0', y='0')
+        self.canvas_2_4.pack()      
+        self.img4 = ImageTk.PhotoImage(Image.open("Weight.png"))      
+        self.canvas_2_4.create_image(8,8, anchor=NW, image=self.img4) 
+        self.canvas_2_4.image = self.img4
         self.frame_1_2_3_4_5.config(height='168', width='168')
         self.frame_1_2_3_4_5.place(anchor='nw', height='168', width='168', x='936', y='300')
         self.frame_1_2_3_4_5_6 = ttk.Frame(self.frame_1)
         self.canvas_2_5 = tk.Canvas(self.frame_1_2_3_4_5_6)
         self.canvas_2_5.config(background='#000000', height='168', width='168')
         self.canvas_2_5.place(anchor='nw', height='168', width='168', x='0', y='0')
+        self.canvas_2_5.pack()      
+        self.img5 = ImageTk.PhotoImage(Image.open("Urine Bag.png"))      
+        self.canvas_2_5.create_image(8,8, anchor=NW, image=self.img5) 
+        self.canvas_2_5.image = self.img5
         self.frame_1_2_3_4_5_6.config(height='168', width='168')
         self.frame_1_2_3_4_5_6.place(anchor='nw', height='168', width='168', x='1129', y='300')
         self.frame_1_2_7 = ttk.Frame(self.frame_1)
