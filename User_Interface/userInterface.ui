@@ -273,6 +273,40 @@
             </layout>
           </object>
         </child>
+        <child>
+          <object class="tk.Message" id="message_1">
+            <property name="background">#000000</property>
+            <property name="cursor">arrow</property>
+            <property name="foreground">#00ff80</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">BPM</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">42</property>
+              <property name="width">84</property>
+              <property name="x">82</property>
+              <property name="y">124</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_8">
+            <property name="background">#000000</property>
+            <property name="cursor">arrow</property>
+            <property name="foreground">#00ff80</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">0</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">82</property>
+              <property name="width">82</property>
+              <property name="x">42</property>
+              <property name="y">42</property>
+            </layout>
+          </object>
+        </child>
       </object>
     </child>
     <child>
@@ -297,6 +331,39 @@
               <property name="width">168</property>
               <property name="x">0</property>
               <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_3">
+            <property name="background">#000000</property>
+            <property name="foreground">#ff0000</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">F</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">42</property>
+              <property name="width">42</property>
+              <property name="x">124</property>
+              <property name="y">124</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_8_9">
+            <property name="background">#000000</property>
+            <property name="cursor">arrow</property>
+            <property name="foreground">#ff0000</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">0</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">82</property>
+              <property name="width">82</property>
+              <property name="x">42</property>
+              <property name="y">42</property>
             </layout>
           </object>
         </child>
@@ -327,6 +394,39 @@
             </layout>
           </object>
         </child>
+        <child>
+          <object class="tk.Message" id="message_1_4">
+            <property name="background">#000000</property>
+            <property name="foreground">#ff8040</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">KG</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">42</property>
+              <property name="width">42</property>
+              <property name="x">124</property>
+              <property name="y">124</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_8_10">
+            <property name="background">#000000</property>
+            <property name="cursor">arrow</property>
+            <property name="foreground">#ff8040</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">0</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">82</property>
+              <property name="width">82</property>
+              <property name="x">42</property>
+              <property name="y">42</property>
+            </layout>
+          </object>
+        </child>
       </object>
     </child>
     <child>
@@ -351,6 +451,39 @@
               <property name="width">168</property>
               <property name="x">0</property>
               <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_5">
+            <property name="background">#000000</property>
+            <property name="foreground">#ffff00</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">%</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">42</property>
+              <property name="width">42</property>
+              <property name="x">124</property>
+              <property name="y">124</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_8_11">
+            <property name="background">#000000</property>
+            <property name="cursor">arrow</property>
+            <property name="foreground">#ffff00</property>
+            <property name="relief">raised</property>
+            <property name="takefocus">false</property>
+            <property name="text" translatable="yes">0</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">82</property>
+              <property name="width">82</property>
+              <property name="x">42</property>
+              <property name="y">42</property>
             </layout>
           </object>
         </child>
@@ -379,6 +512,24 @@
               <property name="width">750</property>
               <property name="x">0</property>
               <property name="y">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Message" id="message_1_7">
+            <property name="background">#000000</property>
+            <property name="cursor">bottom_left_corner</property>
+            <property name="font">TkDefaultFont</property>
+            <property name="foreground">#ffffff</property>
+            <property name="relief">sunken</property>
+            <property name="takefocus">true</property>
+            <property name="text" translatable="yes">Get well soon!</property>
+            <layout manager="place">
+              <property name="anchor">nw</property>
+              <property name="height">115</property>
+              <property name="width">690</property>
+              <property name="x">58</property>
+              <property name="y">58</property>
             </layout>
           </object>
         </child>
