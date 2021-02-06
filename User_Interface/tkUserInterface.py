@@ -1,12 +1,14 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import *  
-from PIL import ImageTk,Image  
+from PIL import ImageTk,Image
+import serial
 
 
 class UserinterfaceApp:
     def __init__(self, master=None):
         # build ui
+        self.count = 0
         self.frame_1 = ttk.Frame(master)
         self.canvas_1_1_1 = tk.Canvas(self.frame_1)
         self.canvas_1_1_1.config(background='#000000', confine='true', height='768')
@@ -141,9 +143,9 @@ class UserinterfaceApp:
         self.canvas_6 = tk.Canvas(self.frame_1_2_7)
         self.canvas_6.config(background='#000000', confine='false', height='175', width='750')
         self.canvas_6.place(anchor='nw', height='175', width='750', x='0', y='0')
-        self.message_1_7 = tk.Label(self.frame_1_2_7, font=(None, 64))
+        self.message_1_7 = tk.Label(self.frame_1_2_7, font=(None, 24))
         self.message_1_7.config(background='#000000', foreground='#ffffff')
-        self.message_1_7.config(takefocus=False, text='Get well soon!')
+        self.message_1_7.config(takefocus=False, text='Unoccupied')
         self.message_1_7.place(anchor='nw', height='115', width='690', x='58', y='58')
         self.canvas_6.pack()      
         self.img6 = ImageTk.PhotoImage(Image.open("Alert.png"))      
@@ -156,14 +158,28 @@ class UserinterfaceApp:
 
         # Main widget
         self.mainwindow = self.frame_1
+        self.update()
 
 
     def run(self):
         self.mainwindow.mainloop()
+        
+        
+    def update(self):
+        #weightValues = np.array(serialWeight.readline().decode().split("\t"))
+        self.message_1_8_11.configure(text=str(self.count))
+        self.count += 1
+        if (self.count % 2 == 0):
+            self.message_1_7.configure(text='Patient urinating...')
+        else:
+            self.message_1_7.configure(text='')
+        if (self.count > 999):
+            self.count = 0
+        self.mainwindow.after(1000, self.update)
 
 if __name__ == '__main__':
     import tkinter as tk
+    #serialWeight = serial.Serial('COM5', 9600)
     root = tk.Tk()
     app = UserinterfaceApp(root)
     app.run()
-
