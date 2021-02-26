@@ -6,7 +6,7 @@ import serial
 import random
 
 
-testing = False
+testing = True
 
 
 class UserinterfaceApp:
@@ -16,7 +16,7 @@ class UserinterfaceApp:
         self.canvas_1_1_1 = tk.Canvas(self.frame_1)
         self.canvas_1_1_1.config(background='#000000', height='768', width='1366')
         self.canvas_1_1_1.place(anchor='nw', height='768', width='1366', x='0', y='0')
-        self.img = ImageTk.PhotoImage(Image.open("Background.jpg"))      
+        self.img = ImageTk.PhotoImage(Image.open("C:/Users/ammar/OneDrive - Higher Education Commission/Final Year Project/User Interface/Background.jpg"))      
         self.canvas_1_1_1.create_image(0, 0, anchor=NW, image=self.img) 
         self.canvas_1_1_1.image = self.img  
         self.frame_1_1 = ttk.Frame(self.frame_1)
@@ -74,7 +74,7 @@ class UserinterfaceApp:
         self.heartrate = tk.Label(self.frame_1_2_3, font=(None, 64))
         self.heartrate.config(background='#000000', foreground='#00ff80', text='--')
         self.heartrate.place(anchor='nw', height='73', width='164', x='2', y='50')
-        self.img2 = ImageTk.PhotoImage(Image.open("Heart Rate.png"))      
+        self.img2 = ImageTk.PhotoImage(Image.open("C:/Users/ammar/OneDrive - Higher Education Commission/Final Year Project/User Interface/Heart Rate.png"))      
         self.canvas_2_1.create_image(8, 8, anchor=NW, image=self.img2) 
         self.canvas_2_1.image = self.img2
         self.frame_1_2_3.config(height='168', width='168')
@@ -89,7 +89,7 @@ class UserinterfaceApp:
         self.temperature = tk.Label(self.frame_1_2_3_4, font=(None, 64))
         self.temperature.config(background='#000000', foreground='#ff0000', text='--')
         self.temperature.place(anchor='nw', height='73', width='164', x='2', y='50')
-        self.img3 = ImageTk.PhotoImage(Image.open("Temperature.png"))      
+        self.img3 = ImageTk.PhotoImage(Image.open("C:/Users/ammar/OneDrive - Higher Education Commission/Final Year Project/User Interface/Temperature.png"))      
         self.canvas_2_3.create_image(8, 8, anchor=NW, image=self.img3) 
         self.canvas_2_3.image = self.img3
         self.frame_1_2_3_4.config(height='168', width='168')
@@ -104,7 +104,7 @@ class UserinterfaceApp:
         self.weight = tk.Label(self.frame_1_2_3_4_5, font=(None, 40))
         self.weight.config(background='#000000', foreground='#ff8040', text='-- to --')
         self.weight.place(anchor='nw', height='73', width='239', x='2', y='50')
-        self.img4 = ImageTk.PhotoImage(Image.open("Weight.png"))      
+        self.img4 = ImageTk.PhotoImage(Image.open("C:/Users/ammar/OneDrive - Higher Education Commission/Final Year Project/User Interface/Weight.png"))      
         self.canvas_2_4.create_image(8, 8, anchor=NW, image=self.img4) 
         self.canvas_2_4.image = self.img4
         self.frame_1_2_3_4_5.config(height='168', width='243')
@@ -119,7 +119,7 @@ class UserinterfaceApp:
         self.urinebag = tk.Label(self.frame_1_2_3_4_5_6, font=(None, 64))
         self.urinebag.config(background='#000000', foreground='#ffff00', text='--')
         self.urinebag.place(anchor='nw', height='73', width='164', x='2', y='50')
-        self.img5 = ImageTk.PhotoImage(Image.open("Urine Bag.png"))      
+        self.img5 = ImageTk.PhotoImage(Image.open("C:/Users/ammar/OneDrive - Higher Education Commission/Final Year Project/User Interface/Urine Bag.png"))      
         self.canvas_2_5.create_image(8, 8, anchor=NW, image=self.img5) 
         self.canvas_2_5.image = self.img5
         self.frame_1_2_3_4_5_6.config(height='168', width='168')
@@ -131,7 +131,7 @@ class UserinterfaceApp:
         self.alert = tk.Label(self.frame_1_2_7, font=(None, 24))
         self.alert.config(background='#000000', foreground='#ffffff', text='Unoccupied')
         self.alert.place(anchor='nw', height='115', width='690', x='58', y='58')
-        self.img6 = ImageTk.PhotoImage(Image.open("Alert.png"))      
+        self.img6 = ImageTk.PhotoImage(Image.open("C:/Users/ammar/OneDrive - Higher Education Commission/Final Year Project/User Interface/Alert.png"))      
         self.canvas_6_1.create_image(8, 8, anchor=NW, image=self.img6) 
         self.canvas_6_1.image = self.img6
         self.frame_1_2_7.config(height='175', width='750')
