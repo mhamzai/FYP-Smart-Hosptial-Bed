@@ -3,11 +3,10 @@ import tkinter.ttk as ttk
 from tkinter import *  
 from PIL import ImageTk, Image
 import serial
-import numpy as np
 import random
 
 
-testing = True
+testing = False
 
 
 class UserinterfaceApp:
@@ -17,7 +16,6 @@ class UserinterfaceApp:
         self.canvas_1_1_1 = tk.Canvas(self.frame_1)
         self.canvas_1_1_1.config(background='#000000', height='768', width='1366')
         self.canvas_1_1_1.place(anchor='nw', height='768', width='1366', x='0', y='0')
-        self.canvas_1_1_1.pack()      
         self.img = ImageTk.PhotoImage(Image.open("Background.jpg"))      
         self.canvas_1_1_1.create_image(0, 0, anchor=NW, image=self.img) 
         self.canvas_1_1_1.image = self.img  
@@ -76,7 +74,6 @@ class UserinterfaceApp:
         self.heartrate = tk.Label(self.frame_1_2_3, font=(None, 64))
         self.heartrate.config(background='#000000', foreground='#00ff80', text='--')
         self.heartrate.place(anchor='nw', height='73', width='164', x='2', y='50')
-        self.canvas_2_1.pack()
         self.img2 = ImageTk.PhotoImage(Image.open("Heart Rate.png"))      
         self.canvas_2_1.create_image(8, 8, anchor=NW, image=self.img2) 
         self.canvas_2_1.image = self.img2
@@ -92,7 +89,6 @@ class UserinterfaceApp:
         self.temperature = tk.Label(self.frame_1_2_3_4, font=(None, 64))
         self.temperature.config(background='#000000', foreground='#ff0000', text='--')
         self.temperature.place(anchor='nw', height='73', width='164', x='2', y='50')
-        self.canvas_2_3.pack()      
         self.img3 = ImageTk.PhotoImage(Image.open("Temperature.png"))      
         self.canvas_2_3.create_image(8, 8, anchor=NW, image=self.img3) 
         self.canvas_2_3.image = self.img3
@@ -108,7 +104,6 @@ class UserinterfaceApp:
         self.weight = tk.Label(self.frame_1_2_3_4_5, font=(None, 40))
         self.weight.config(background='#000000', foreground='#ff8040', text='-- to --')
         self.weight.place(anchor='nw', height='73', width='239', x='2', y='50')
-        self.canvas_2_4.pack()      
         self.img4 = ImageTk.PhotoImage(Image.open("Weight.png"))      
         self.canvas_2_4.create_image(8, 8, anchor=NW, image=self.img4) 
         self.canvas_2_4.image = self.img4
@@ -124,7 +119,6 @@ class UserinterfaceApp:
         self.urinebag = tk.Label(self.frame_1_2_3_4_5_6, font=(None, 64))
         self.urinebag.config(background='#000000', foreground='#ffff00', text='--')
         self.urinebag.place(anchor='nw', height='73', width='164', x='2', y='50')
-        self.canvas_2_5.pack()      
         self.img5 = ImageTk.PhotoImage(Image.open("Urine Bag.png"))      
         self.canvas_2_5.create_image(8, 8, anchor=NW, image=self.img5) 
         self.canvas_2_5.image = self.img5
@@ -137,7 +131,6 @@ class UserinterfaceApp:
         self.alert = tk.Label(self.frame_1_2_7, font=(None, 24))
         self.alert.config(background='#000000', foreground='#ffffff', text='Unoccupied')
         self.alert.place(anchor='nw', height='115', width='690', x='58', y='58')
-        self.canvas_6_1.pack()      
         self.img6 = ImageTk.PhotoImage(Image.open("Alert.png"))      
         self.canvas_6_1.create_image(8, 8, anchor=NW, image=self.img6) 
         self.canvas_6_1.image = self.img6
@@ -161,9 +154,9 @@ class UserinterfaceApp:
             weightValues = "<" + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + "," + str(random.randint(0, 150)) + " to " + str(random.randint(0, 150)) + ">"
         print(weightValues)
         if (weightValues[0] == '<'):
-            weightValues = np.array(weightValues.split(","))
+            weightValues = weightValues.split(",")
             wt = weightValues[12].replace(">", "")
-            self.weight.configure(text=wt)
+            self.weight.config(text=wt)
             diff = int((float(weightValues[0].replace("<", "")) / 150.0) * 255.0)
             if (diff < 0):
                 diff = 0
@@ -316,12 +309,11 @@ class UserinterfaceApp:
             tp = tempValue
         else:
             tp = str(int(float(tempValue)))
-        self.temperature.configure(text=tp)
+        self.temperature.config(text=tp)
         self.mainwindow.after(42, self.update)
 
 
 if __name__ == '__main__':
-    import tkinter as tk
     if (not testing):
         serialTemp = serial.Serial('COM6', 9600)
         serialWeight = serial.Serial('COM4', 9600)
