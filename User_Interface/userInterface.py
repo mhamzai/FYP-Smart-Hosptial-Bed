@@ -154,6 +154,7 @@ class UserinterfaceApp:
         if (not testing):
             weightValues = serialWeight.readline().decode().strip()
             while (not weightValues.startswith('<')):
+                print("Weight Port:", weightValues)
                 weightValues = serialWeight.readline().decode().strip()
         else:
             weightValues = '<' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ',' + str(random.randint(0, 150)) + ' to ' + str(random.randint(0, 150)) + '>'
@@ -163,10 +164,11 @@ class UserinterfaceApp:
         wt = weightValues[12].replace('>', '')
         self.weight.config(text=wt)
 
-        if (wt == '-- to --'):
-            self.alert.config(text = 'Unoccupied')
-        else:
-            self.alert.config(text = 'Patient on bed')
+        if (not testing):
+            if (wt == '-- to --'):
+                self.alert.config(text = 'Unoccupied')
+            else:
+                self.alert.config(text = 'Patient on bed')
 
         diff = int((float(weightValues[0].replace('<', '')) / 150.0) * 255.0)
         if (diff < 0):
@@ -324,12 +326,13 @@ class UserinterfaceApp:
             tp = str(int(float(tempValue)))
         self.temperature.config(text=tp)
 
-        serialWeight.flush()
-        serialWeight.flushInput()
-        serialWeight.flushOutput()
-        serialTemp.flush()
-        serialTemp.flushInput()
-        serialTemp.flushOutput()
+        if (not testing):
+            serialWeight.flush()
+            serialWeight.flushInput()
+            serialWeight.flushOutput()
+            serialTemp.flush()
+            serialTemp.flushInput()
+            serialTemp.flushOutput()
 
         self.mainwindow.after(42, self.update)
 
