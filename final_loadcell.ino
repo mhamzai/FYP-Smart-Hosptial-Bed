@@ -71,7 +71,7 @@ void setup()
 void loop()
 {
   bool is_change = false;
-
+  //Serial.println("----");
   static boolean newDataReady = 0;
   const int serialPrintInterval = 0; //increase value to slow down serial print activity
   testFile = SPIFFS.open(F("/testCreate.txt"), "a+");
@@ -106,7 +106,7 @@ void loop()
         }
         if (bag == 2)
         {
-          //Serial.println("New bag has been installed!");
+      //Serial.println("New bag has been installed!");
           //Serial.print(now());
           Serial.print("BC"); //bag is changed
           Serial.println();
@@ -221,6 +221,7 @@ void loop()
       /////////////////////////////////////
     }
   }
+  WriteCapacity(current);
 }
 void WriteToFile(String s)
 {
@@ -241,11 +242,11 @@ void WriteCapacity(float curr)
   }
   else if (curr / 5 <= 100)
   {
-    Serial.print(curr / 5);
+    Serial.print(curr/5);
   }
   else
   {
-    Serial.print("CapacityFull");
+    Serial.print(100);
   }
   Serial.println(">");
 }
