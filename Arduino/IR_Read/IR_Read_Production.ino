@@ -71,7 +71,7 @@ void loop() {
   //printTemp('L');
   //Serial.println("======");
 
-  delay(500);
+  delay(40);
   //Robojax Example for MLX90614
 }
 
