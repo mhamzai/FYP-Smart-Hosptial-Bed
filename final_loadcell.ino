@@ -53,10 +53,10 @@ void setup()
   }
 
   set = now();                 //getting the start time
-  Serial.begin(57600);
+  Serial.begin(9600);
   Serial.println(second(set)); //printing the start time in seconds
 
-  Serial.println("Inizializing FS...");
+  
   SPIFFS.begin(true);
   /*{
     break;
@@ -68,6 +68,7 @@ void setup()
     }
   */
 }
+int _flag=0;
 void loop()
 {
   bool is_change = false;
@@ -108,9 +109,10 @@ void loop()
         {
       //Serial.println("New bag has been installed!");
           //Serial.print(now());
-          Serial.print("BC"); //bag is changed
-          Serial.println();
-          WriteCapacity(current);
+//          Serial.print("BC"); //bag is changed
+     //     Serial.println(-1);//bag changed
+//          Serial.println();
+    //      WriteCapacity(current);
           a = "";
           a = a + now() + "    BC";
           WriteToFile(a);
@@ -130,13 +132,14 @@ void loop()
         digitalWrite(2, LOW); //led is off
       }
 
-      else if ((now()) - (set) > 9 and current >= 5 && !print_info) //if a change in the reading has not been detected in 9 secs, we generate an alert
+      else if ((now()) - (set) > 300 and current >= 5 && !print_info) //if a change in the reading has not been detected in 9 secs, we generate an alert
       {
         Serial.println();
         //Serial.print(now());
 
-        Serial.println("PP"); //patient not peeing
-        WriteCapacity(current);
+        //Serial.println("PP"); //patient not peeing
+        _flag=1;
+      //  WriteCapacity(current);
         a = "";
         a = a + now() + "    PP";
         WriteToFile(a);
@@ -146,24 +149,23 @@ void loop()
         print_info = true;
       }
 
-      else if (current < 5 && bag == 0 && !print_info) //a reading<5 indicates the absence of the bag
+      else if (current < 5 && bag == 0 ) //a reading<5 indicates the absence of the bag
       {
         //Serial.println("A bag needs to be installed");
         a = "A bag needs to be installed";
 
         WriteToFile(a);
-
+        _flag=2;////////
         print_info = true;
       }
 
-      else if (current < 5 && bag == 1 && !print_info) //bag has been removed
+      else if (current < 5 && bag == 1 ) //bag has been removed
       {
-        Serial.println();
         //Serial.print(now());
-        Serial.print("BR"); //bag is removed
-        Serial.println();
-        WriteCapacity(current);
-
+//        Serial.print("BR"); //bag is removed
+  //      Serial.println();
+        //WriteCapacity(current);
+        _flag=2;//2 for BR, 1 for PP
         a = "";
         a = a + now() +  "    BR";
         WriteToFile(a);
@@ -175,11 +177,11 @@ void loop()
 
       if (current > 500 && bag == 1 && !print_info)
       {
-        Serial.println();
+       // Serial.println();
         // Serial.print(now());
-        Serial.print("BF"); //bag is full
-        Serial.println();
-        WriteCapacity(current);
+       // Serial.print("BF"); //bag is full
+       // Serial.println();
+        //WriteCapacity(current);
 
         a = "";
         a = a + now() +  "    BF";
@@ -198,11 +200,12 @@ void loop()
 
         {
           // Serial.print(now());
+          _flag=0;
           //Serial.print("  ");
           //Serial.print("LR   ");
           //Serial.print(global_previous);
           //Serial.print("\t");
-          WriteCapacity(current);
+          //WriteCapacity(current);
           //Serial.println(current);
 
           a = "";
@@ -222,6 +225,7 @@ void loop()
     }
   }
   WriteCapacity(current);
+  delay(42);    
 }
 void WriteToFile(String s)
 {
@@ -235,7 +239,8 @@ void WriteToFile(String s)
   }
 }
 void WriteCapacity(float curr)
-{ Serial.print("<");
+{ if(_flag==0)
+  {Serial.print("<");
   if (curr / 5 < 0)
   {
     Serial.print(0);
@@ -248,5 +253,15 @@ void WriteCapacity(float curr)
   {
     Serial.print(100);
   }
-  Serial.println(">");
+  Serial.println(">");}
+
+  else if(_flag==1)
+  {
+    Serial.println("PP");
+  }
+  else if(_flag==2)
+  {
+    Serial.println(-1);
+  }
+
 }
