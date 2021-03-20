@@ -83,7 +83,7 @@ void loop()
   // get smoothed value from the dataset:
   if (newDataReady)
   {
-    if (is_patient == true)// && millis() > t + serialPrintInterval)
+    if (is_patient == true && millis() > t + serialPrintInterval)
     {
       current = LoadCell.getData();
       if (iter == 0) //storing the first reading of the load cell as the previous reading
@@ -197,24 +197,24 @@ void loop()
     }
   }
   WriteCapacity(current);
- // delay(42);    
+  delay(42);    
 }
 void WriteCapacity(float curr)
 { if(_flag==0)
-  {Serial.print("<");
+  {
   if (curr / 5 < 0)
   {
-    Serial.print(0);
+    Serial.println(0);
   }
   else if (curr / 5 <= 100)
   {
-    Serial.print(round(curr/5));
+    Serial.println(int(curr/5));
   }
   else
   {
-    Serial.print(100);
+    Serial.println(100);
   }
-  Serial.println(">");}
+  }
 
   else if(_flag==1)
   {
