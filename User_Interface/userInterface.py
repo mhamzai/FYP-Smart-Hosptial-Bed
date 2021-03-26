@@ -143,7 +143,9 @@ class UserinterfaceApp:
         global urineBagValue
         alertText = ''
 
-        if (not weightDisconnected):
+        if (weightDisconnected):
+            alertText += 'Contour & weight estimator disconnected!' + '\n'
+        else:
             weightValues = serialWeight.readline().decode().strip()
             while (not weightValues.startswith('<')):
                 print("Weight Port:", weightValues)
@@ -157,7 +159,7 @@ class UserinterfaceApp:
             else:
                 alertText += 'Patient on bed' + '\n'
             
-            for i in range (12):
+            for i in range (24):
                 diff = int((float(weightValues[i].replace('<', '')) / 150.0) * 255.0)
                 if (diff < 0):
                     diff = 0
@@ -171,7 +173,9 @@ class UserinterfaceApp:
                 color = '#' + hexVal + '0000'
                 self.contour[i].config(background=color)
 
-        if (not tempDisconnected):
+        if (tempDisconnected):
+            alertText += 'Temperature predictor disconnected!' + '\n'
+        else:
             tempValue = serialTemp.readline().decode().strip()
             print('Temperature Port:', tempValue)
             if (tempValue == '--' or tempValue == '-' or tempValue == ''):
@@ -181,9 +185,11 @@ class UserinterfaceApp:
                     tp = str(int(float(tempValue)))
                     self.temperature.config(text=tp)
 
-        if (not urineDisconnected):
+        if (urineDisconnected):
+            alertText += 'Urine bag module disconnected!' + '\n'
+        else:
             try:
-                urineBagValue = serialUrineBag.readline().decode().strip().replace('<', '').replace('>', '')
+                urineBagValue = serialUrineBag.readline().decode().strip()
                 print('Urine Bag Port:', urineBagValue)
                 if (urineBagValue == '-1'):
                     self.urinebag.config(text='--')
