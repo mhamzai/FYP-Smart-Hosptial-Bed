@@ -1,20 +1,77 @@
-#include <Wire.h>
-#include <Adafruit_MLX90614.h>
+#include <Arduino.h>
+#include <include/twi.h>
+
+#define ADDR      0x5A
+
+//EEPROM 32x16
+#define TO_MAX    0x00
+#define TO_MIN    0x01
+#define PWM_CTRL  0x02
+
+//RAM 32x16
+#define RAW_IR_1  0x04
+#define RAW_IR_2  0x05
+#define TA        0x06
+#define TOBJ_1    0x07
+#define TOBJ_2    0x08
+
+#define SYNC_PIN  2
+
+static const uint32_t TWI_CLOCK = 100000;
+static const uint32_t RECV_TIMEOUT = 100000;
+static const uint32_t XMIT_TIMEOUT = 100000;
+
+Twi *pTwi = WIRE_INTERFACE;
+
+static void Wire_Init(void) {
+  pmc_enable_periph_clk(WIRE_INTERFACE_ID);
+  PIO_Configure(
+  g_APinDescription[PIN_WIRE_SDA].pPort,
+  g_APinDescription[PIN_WIRE_SDA].ulPinType,
+  g_APinDescription[PIN_WIRE_SDA].ulPin,
+  g_APinDescription[PIN_WIRE_SDA].ulPinConfiguration);
+  PIO_Configure(
+  g_APinDescription[PIN_WIRE_SCL].pPort,
+  g_APinDescription[PIN_WIRE_SCL].ulPinType,
+  g_APinDescription[PIN_WIRE_SCL].ulPin,
+  g_APinDescription[PIN_WIRE_SCL].ulPinConfiguration);
+
+  NVIC_DisableIRQ(TWI1_IRQn);
+  NVIC_ClearPendingIRQ(TWI1_IRQn);
+  NVIC_SetPriority(TWI1_IRQn, 0);
+  NVIC_EnableIRQ(TWI1_IRQn);
+}
+
+static void Wire1_Init(void) {
+    pmc_enable_periph_clk(WIRE1_INTERFACE_ID);
+  PIO_Configure(
+      g_APinDescription[PIN_WIRE1_SDA].pPort,
+      g_APinDescription[PIN_WIRE1_SDA].ulPinType,
+      g_APinDescription[PIN_WIRE1_SDA].ulPin,
+      g_APinDescription[PIN_WIRE1_SDA].ulPinConfiguration);
+  PIO_Configure(
+      g_APinDescription[PIN_WIRE1_SCL].pPort,
+      g_APinDescription[PIN_WIRE1_SCL].ulPinType,
+      g_APinDescription[PIN_WIRE1_SCL].ulPin,
+      g_APinDescription[PIN_WIRE1_SCL].ulPinConfiguration);
+
+  NVIC_DisableIRQ(TWI0_IRQn);
+  NVIC_ClearPendingIRQ(TWI0_IRQn);
+  NVIC_SetPriority(TWI0_IRQn, 0);
+  NVIC_EnableIRQ(TWI0_IRQn);
+}
 const int pingPin = 11; // Trigger Pin of Ultrasonic Sensor
 const int echoPin = 10; // Echo Pin of Ultrasonic Sensor
 
 char *typeName[]={"Object","Ambient", "Calculated Object Celsius", "Calculated Object Fahrenheit"};
 double microsecondsToCentimeters(long microseconds);
 float patientArea = 0;
-float prev_val=0;
+float prev_val=-1;
 double area= 0;
 #define MAX_WORD_COUNT 12
 char *Words[MAX_WORD_COUNT];
 uint16_t values[MAX_WORD_COUNT];
 String serialRead = "";
-Adafruit_MLX90614 mlx = Adafruit_MLX90614();
-
-extern TwoWire Wire1;
 
 void setup() {
   Serial.begin(9600);
@@ -24,10 +81,16 @@ void setup() {
   pinMode(echoPin, INPUT);
   digitalWrite(9, HIGH);
   Serial.println("Robojax MLX90614 test");  
-  Wire1.begin(9);                // join i2c bus with address #4
-  Wire1.onReceive(receiveEvent); // register event
-  mlx.begin();
-  mlx.begin();  
+  //Wire1.begin(9);                // join i2c bus with address #4
+  //Wire1.onReceive(receiveEvent); // register event
+
+  pinMode(SYNC_PIN, OUTPUT);
+  digitalWrite(SYNC_PIN, LOW);
+
+  Wire_Init();
+  // Disable PDC channel
+  pTwi->TWI_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
+  TWI_ConfigureMaster(pTwi, TWI_CLOCK, VARIANT_MCK);
 }
 
 void loop() {
@@ -37,6 +100,7 @@ void loop() {
   digitalWrite(pingPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(pingPin, LOW);
+  float ratio = 0.5;
   float duration = pulseIn(echoPin, HIGH);
   double cm = microsecondsToCentimeters(duration);
 
@@ -44,33 +108,54 @@ void loop() {
   area = 3.14159265358979 * (meters * meters);
   Serial.print("Sensor Area is : ");
   Serial.println(area);
-  patientArea = bodyArea();
-  if (patientArea == -1)
+  //patientArea = bodyArea();
+  uint16_t tempUK;
+  float tempK;
+  uint8_t hB, lB, pec;
+
+  digitalWrite(SYNC_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(SYNC_PIN, LOW);
+
+  TWI_StartRead(pTwi, ADDR, TOBJ_1, 1);
+
+  lB = readByte();
+  hB = readByte();
+  
+  //last read
+  TWI_SendSTOPCondition(pTwi);
+  pec = readByte();
+  
+  while (!TWI_TransferComplete(pTwi)) 
+    ;
+  //TWI_WaitTransferComplete(pTwi, RECV_TIMEOUT);
+
+  tempUK = (hB << 8) | lB;
+  if(tempUK & (1 << 16)) {
+    Serial.print("Error !");
+    Serial.println(tempK);
+  } 
+  else {
+    tempK = ((float)tempUK * 2) / 100 ;
+    Serial.print(" C: ");
+    Serial.println(tempK - 273.15);
+  }
+  float tempObjec = tempK - 273.15;
+   if (patientArea == -1)
   {
     Serial.println("no patient area");
+    prev_val = tempObjec;
     delay(1000);
-    //return;
+    return;
   }
   else 
   {Serial.print("patient area = ");
-    Serial.println(patientArea);  
-  }
-  printTemp('C');
-  printTemp('D');
-
-  printTemp('F');
-  printTemp('G');
-  printTemp('R');
-  printTemp('S');
-  if ( getTemp('C') > 40)
-  {
-    //do something here
-  }
-
-  printTemp('K');
-  printTemp('L');
-  Serial.println("======");
-
+    Serial.println(patientArea); 
+    ratio = patientArea/area;
+  } 
+  float bodyTemp = ((tempObjec) - ((1 - ratio) * (prev_val))) / (ratio);
+  Serial.print("Body Temp -> ");
+  Serial.println(bodyTemp);
   delay(1000);
   //Robojax Example for MLX90614
 }
@@ -94,145 +179,37 @@ void loop() {
  * in Ajax, Ontario, Canada
  * www.Robojax.com 
  */
-float getTemp(char type)
-{
-   // Robojax.com MLX90614 Code
-    float value;
-    float ratio = patientArea / area;
-    float tempObjec = mlx.readObjectTempC();//in C object
-    float tempAmbient = mlx.readAmbientTempC();
-    //float areaCone = 1.419; // in meteres
-    float bodyTemp;
-    if (digitalRead(8))
-    {bodyTemp = ((tempObjec) - ((1-ratio)*(prev_val)))/ (ratio);}
-    else
-    {bodyTemp = tempObjec;}
-    float bodyTempF = ((mlx.readObjectTempF()) - ((1-ratio)*(mlx.readAmbientTempF())))/ (ratio); 
-    
-   if(type =='F')
-   {
-    value = mlx.readObjectTempF(); //Fah. Object
-   }else if(type =='G')
-   {
-    value = mlx.readAmbientTempF();//Fah Ambient
-   }else if(type =='K')
-   {
-    value = tempObjec + 273.15;// Object Kelvin
-   }else if(type =='L')
-   {
-    value = tempAmbient + 273.15;//Ambient Kelvin
-   }else if(type =='C')
-   {
-    value = tempObjec;
-   }else if(type =='D')
-   {
-    value = tempAmbient;
-   }
-   else if(type == 'R') // Calculated object temperature in Celsius
-   {
-    value = bodyTemp;
-   }
-   else if(type == 'S') // Calculated object temperature in Fahrenheit
-   {
-    value = bodyTempF;
-   }
-   
-   if (!digitalRead(8))
-   {prev_val=tempObjec;}
-   return value;
-    // Robojax.com MLX90614 Code
-}//getTemp
 
-/*
- * @brief nothing
- * @param "type" is character
- *     C = Object Celsius
- *     D = Ambient Celsius
- *     
- *     K = Object Keliven
- *     L = Ambient in Keilven
- *     
- *     F = Object Fahrenheit
- *     G = Ambient in Fahrenheit
- *     
- *     R = Calculated Object in Celsius
- *     S = Calculated Object in Fahrenheit
 
- * @return prints temperature value in serial monitor
- * Usage: to get Fahrenheit type: getTemp('F')
- * to print it on serial monitor Serial.println(getTemp('F'));
- * Written by Ahmad Shamshiri on Mar 30, 2020 at 21:51
- * in Ajax, Ontario, Canada
- * www.Robojax.com 
- */
-void printTemp(char type)
-{
-  // Robojax.com MLX90614 Code
-  float tmp =getTemp(type);
+uint8_t readByte() {
+  //TWI_WaitByteReceived(pTwi, RECV_TIMEOUT);
+  while (!TWI_ByteReceived(pTwi))
+    ;
+  return TWI_ReadByte(pTwi);
+}
 
-  if(type =='C')
-  {
-    Serial.print(typeName[0]);
-    Serial.print(" ");    
-    Serial.print(tmp);
-    Serial.print("°");      
-    Serial.println("C");
-  }else if(type =='D')
-  {
-    Serial.print(typeName[1]);
-    Serial.print(" ");     
-    Serial.print(tmp);
-    Serial.print("°");      
-    Serial.println("C");
-  }else if(type =='F')
-  {
-    Serial.print(typeName[0]);
-    Serial.print(" ");     
-    Serial.print(tmp);
-    Serial.print("°");      
-    Serial.println("F");
-  }else if(type =='G')
-  {
-    Serial.print(typeName[1]);
-    Serial.print(" ");     
-    Serial.print(tmp);
-    Serial.print("°");      
-    Serial.println("F");
+static inline bool TWI_WaitTransferComplete(Twi *_twi, uint32_t _timeout) {
+  while (!TWI_TransferComplete(_twi)) {
+    if (TWI_FailedAcknowledge(_twi))
+      return false;
+    if (--_timeout == 0)
+      return false;
   }
+  return true;
+}
 
-  else if(type =='K')
-  {
-    Serial.print(typeName[0]);
-    Serial.print(" ");     
-    Serial.print(tmp);  
-    Serial.print("°");       
-    Serial.println(" K");
-  }  
-  else if(type =='L')
-  {
-    Serial.print(typeName[1]);
-    Serial.print(" ");     
-    Serial.print(tmp);  
-    Serial.print("°");       
-    Serial.println(" K");
+static inline bool TWI_WaitByteReceived(Twi *_twi, uint32_t _timeout) {
+  while (!TWI_ByteReceived(_twi)) {
+    if (TWI_FailedAcknowledge(_twi))
+      return false;
+    if (--_timeout == 0)
+      return false;
   }
-  else if(type == 'R')
-  {
-    Serial.print(typeName[2]);
-    Serial.print(" ");     
-    Serial.print(tmp);
-    Serial.print("°");      
-    Serial.println("C");
-  }
-  else if(type == 'S')
-  {
-    Serial.print(typeName[3]);
-    Serial.print(" ");     
-    Serial.print(tmp);
-    Serial.print("°");      
-    Serial.println("F");
-  }
-  
+  return true;
+}
+
+static inline bool TWI_FailedAcknowledge(Twi *pTwi) {
+  return pTwi->TWI_SR & TWI_SR_NACK;
 }
 
 double microsecondsToCentimeters(long microseconds) {
@@ -244,7 +221,7 @@ void SendData(double calcBodyTemp)
 {
   // send data to machine most probably Raspberry
 }
-
+/*
 void receiveEvent(int howMany)
 {
   //Serial.println("something came here!");
@@ -312,4 +289,4 @@ int split_message(char* str) {
   }
   Serial.println();
   return  word_count;
-}
+}*/
