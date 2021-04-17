@@ -13,8 +13,8 @@ char *Words[MAX_WORD_COUNT];
 uint16_t values[MAX_WORD_COUNT];
 String serialRead = "";
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+TwoWire Wire2(PB11, PB10);
 
-extern TwoWire Wire1;
 
 void setup() {
   Serial.begin(9600);
@@ -24,8 +24,8 @@ void setup() {
   pinMode(echoPin, INPUT);
   digitalWrite(9, HIGH);
   Serial.println("Robojax MLX90614 test");  
-  Wire1.begin(9);                // join i2c bus with address #4
-  Wire1.onReceive(receiveEvent); // register event
+  Wire2.begin(9);                // join i2c bus with address #4
+  Wire2.onReceive(receiveEvent); // register event
   mlx.begin();
   mlx.begin();  
 }
@@ -86,7 +86,6 @@ void loop() {
  *     
  *     F = Object Fahrenheit
  *     G = Ambient in Fahrenheit
-
  * @return returns one of the values above
  * Usage: to get Fahrenheit type: getTemp('F')
  * to print it on serial monitor Serial.println(getTemp('F'));
@@ -157,7 +156,6 @@ float getTemp(char type)
  *     
  *     R = Calculated Object in Celsius
  *     S = Calculated Object in Fahrenheit
-
  * @return prints temperature value in serial monitor
  * Usage: to get Fahrenheit type: getTemp('F')
  * to print it on serial monitor Serial.println(getTemp('F'));
@@ -247,20 +245,20 @@ void SendData(double calcBodyTemp)
 
 void receiveEvent(int howMany)
 {
-  //Serial.println("something came here!");
+  Serial.println("something came here!");
   String i2cData = "";
-  if ((char)Wire1.read() != '<')
+  if ((char)Wire2.read() != '<')
   {serialRead == i2cData;
     return;
   }
-  while(1 < Wire1.available()) // loop through all but the last
+  while(1 < Wire2.available()) // loop through all but the last
   {
-    i2cData += Wire1.read();
-    i2cData += (char)Wire1.read();// receive byte as a character
+    i2cData += Wire2.read();
+    i2cData += (char)Wire2.read();// receive byte as a character
   }
-  if ((char)Wire1.read() != '>')
+  if ((char)Wire2.read() != '>')
   {serialRead = ""; return;}
-  //Serial.print("gen str ==>> ");Serial.println(i2cData);
+  Serial.print("gen str ==>> ");Serial.println(i2cData);
  serialRead = i2cData;
 }
 
