@@ -3,6 +3,8 @@ import tkinter.ttk as ttk
 from tkinter import *  
 from PIL import ImageTk, Image
 import serial
+from winsound import *
+import json
 
 
 uiPath = 'C:\\Users\\ammar\\OneDrive - Higher Education Commission\\Final Year Project\\User_Interface\\'
@@ -123,16 +125,10 @@ class UserinterfaceApp:
 
         if (firstInit):
             firstInit = False
-            self.master.geometry("{0}x{1}+0+0".format(self.master.winfo_screenwidth(), self.master.winfo_screenheight()))
-            self.master.bind("<Configure>", self.on_resize)
+            self.master.geometry('{0}x{1}+0+0'.format(self.master.winfo_screenwidth(), self.master.winfo_screenheight()))
+            self.master.bind('<Configure>', self.on_resize)
+            #PlaySound(uiPath + 'start.mp3', SND_FILENAME)
             self.update()
-
-
-    def on_resize(self, event):
-        previousWidth = self.windowWidth
-        previousHeight = self.windowHeight
-        if (previousWidth != self.master.winfo_width() or previousHeight != self.master.winfo_height()):
-            self.__init__(self.master)
 
 
     def run(self):
@@ -146,21 +142,25 @@ class UserinterfaceApp:
         if (weightDisconnected):
             alertText += 'Contour & weight estimator disconnected!' + '\n'
         else:
-            weightValues = serialWeight.readline().decode().strip()
-            while (not weightValues.startswith('<')):
-                print("Weight Port:", weightValues)
-                weightValues = serialWeight.readline().decode().strip()
-            print("Weight Port:", weightValues)
-            weightValues = weightValues.split(',')
-            wt = weightValues[12].replace('>', '').replace('Calibrated', '').replace('!', '')
-            self.weight.config(text=wt)
-            if (wt == '-- to --'):
+            weightJSON = serialWeight.readline().decode().strip()
+            while (not weightJSON.startswith('{')):
+                print('Weight Port:', weightJSON)
+                weightJSON = serialWeight.readline().decode().strip()
+            print('Weight Port:', weightJSON)
+            weightDict = json.loads(weightJSON)
+            wt = weightDict['weight']
+            if (wt == 0.00):
+                wt = '-- to --'
+                self.weight.config(text=wt)
                 alertText += 'Unoccupied' + '\n'
             else:
+                wt = str(round(wt)-5) + ' to ' + str(round(wt)+5)
+                self.weight.config(text=wt)
                 alertText += 'Patient on bed' + '\n'
             
+            diffs = weightDict['diff']
             for i in range (24):
-                diff = int((float(weightValues[i].replace('<', '')) / 150.0) * 255.0)
+                diff = int((float(diffs[i]) / 150.0) * 255.0)
                 if (diff < 0):
                     diff = 0
                 hexVal = hex(diff).lstrip('0x').rstrip('L')
@@ -172,6 +172,10 @@ class UserinterfaceApp:
                     hexVal = 'ff'
                 color = '#' + hexVal + '0000'
                 self.contour[i].config(background=color)
+
+            weightAlert = weightDict['msg']
+            if (weightAlert != ''):
+                alertText +=  + '\n'
 
         if (tempDisconnected):
             alertText += 'Temperature predictor disconnected!' + '\n'
@@ -222,6 +226,13 @@ class UserinterfaceApp:
             serialUrineBag.flushOutput()
 
         self.mainwindow.after(42, self.update)
+
+
+    def on_resize(self, event):
+        previousWidth = self.windowWidth
+        previousHeight = self.windowHeight
+        if (previousWidth != self.master.winfo_width() or previousHeight != self.master.winfo_height()):
+            self.__init__(self.master)
 
 
 if __name__ == '__main__':
