@@ -2,17 +2,18 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import *  
 from PIL import ImageTk, Image
+import os
 import serial
-from winsound import *
 import json
+import simpleaudio as sa
 
 
-uiPath = 'C:\\Users\\ammar\\OneDrive - Higher Education Commission\\Final Year Project\\User_Interface\\'
+uiPath = os.path.realpath(__file__).replace('userInterface.py', '')
 weightDisconnected = False
 tempDisconnected = False
 urineDisconnected = False
 firstInit = True
-
+previousAlert = ''
 
 class UserinterfaceApp:
 
@@ -127,7 +128,8 @@ class UserinterfaceApp:
             firstInit = False
             self.master.geometry('{0}x{1}+0+0'.format(self.master.winfo_screenwidth(), self.master.winfo_screenheight()))
             self.master.bind('<Configure>', self.on_resize)
-            #PlaySound(uiPath + 'start.mp3', SND_FILENAME)
+            startup = sa.WaveObject.from_wave_file(uiPath + 'Startup.wav')
+            startup.play()
             self.update()
 
 
@@ -137,7 +139,11 @@ class UserinterfaceApp:
         
     def update(self):
         global urineBagValue
+        global previousAlert
         alertText = ''
+        unoccupied = sa.WaveObject.from_wave_file(uiPath + 'Unoccupied.wav')
+        occupied = sa.WaveObject.from_wave_file(uiPath + 'Occupied.wav')
+        alert = sa.WaveObject.from_wave_file(uiPath + 'Alert.wav')
 
         if (weightDisconnected):
             alertText += 'Contour & weight estimator disconnected!' + '\n'
@@ -150,42 +156,62 @@ class UserinterfaceApp:
             weightDict = json.loads(weightJSON)
             wt = weightDict['weight']
             if (wt == 0.00):
+                isOccupied = False
                 wt = '-- to --'
                 self.weight.config(text=wt)
                 alertText += 'Unoccupied' + '\n'
+                if (not('Unoccupied' in previousAlert)):
+                    try:
+                        if(not playUnoccupied.is_playing()):
+                            playUnoccupied = unoccupied.play()
+                    except:
+                        playUnoccupied = unoccupied.play()
             else:
+                isOccupied = True
                 wt = str(round(wt)-5) + ' to ' + str(round(wt)+5)
                 self.weight.config(text=wt)
                 alertText += 'Patient on bed' + '\n'
+                if (not('Patient on bed' in previousAlert)):
+                    try:
+                        if(not playOccupied.is_playing()):
+                            playOccupied = occupied.play()
+                    except:
+                        playOccupied = occupied.play()
             
             diffs = weightDict['diff']
             for i in range (24):
-                diff = int((float(diffs[i]) / 150.0) * 255.0)
+                diff = int(float(diffs[i])) * 2
                 if (diff < 0):
                     diff = 0
                 hexVal = hex(diff).lstrip('0x').rstrip('L')
                 if (len(hexVal) == 1):
                     hexVal = '0' + hexVal
-                elif (len(hexVal) == 0):
-                    hexVal = '00'
                 elif (len(hexVal) == 3):
                     hexVal = 'ff'
+                elif (len(hexVal) == 0):
+                    hexVal = '00'
                 color = '#' + hexVal + '0000'
                 self.contour[i].config(background=color)
 
-            weightAlert = weightDict['msg']
-            if (weightAlert != ''):
-                alertText +=  + '\n'
+            if (isOccupied):
+                weightAlert = weightDict['msg']
+                if (weightAlert != ''):
+                    alertText += 'Patient hasn\'t been repositioned! Please do it.' + '\n'
+                    try:
+                        if(not playAlert.is_playing()):
+                            playAlert = alert.play()
+                    except:
+                        playAlert = alert.play()
 
         if (tempDisconnected):
             alertText += 'Temperature predictor disconnected!' + '\n'
         else:
             tempValue = serialTemp.readline().decode().strip()
             print('Temperature Port:', tempValue)
-            if (tempValue == '--' or tempValue == '-' or tempValue == ''):
-                self.temperature.config(text='--')
-            else:
-                if (tempValue != 'nan' and tempValue != 'an' and tempValue != 'n'):
+            if (not isOccupied or tempValue == '--' or tempValue == '-' or tempValue == ''):
+                tp = '--'
+                self.temperature.config(text=tp)
+            elif (tempValue != 'nan' and tempValue != 'an' and tempValue != 'n'):
                     tp = str(int(float(tempValue)))
                     self.temperature.config(text=tp)
 
@@ -195,20 +221,37 @@ class UserinterfaceApp:
             try:
                 urineBagValue = serialUrineBag.readline().decode().strip()
                 print('Urine Bag Port:', urineBagValue)
-                if (urineBagValue == '-1'):
+                if (not isOccupied or urineBagValue == '-1'):
                     self.urinebag.config(text='--')
                 elif (urineBagValue == 'PP'):
-                    alertText += 'Patient hasn\'t urinated in quite some time!' + '\n'
+                    alertText += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
+                    try:
+                        if(not playAlert.is_playing()):
+                            playAlert = alert.play()
+                    except:
+                        playAlert = alert.play()
                 elif (urineBagValue.isnumeric()):
                     self.urinebag.config(text=urineBagValue)
-                    if (int(float(urineBagValue)) == 100):
-                        alertText += 'Urine Bag full! Please get it changed ASAP.' + '\n'
-                    elif (int(float(urineBagValue)) > 90):
-                        alertText += 'Urine Bag almost full! Please get it changed.' + '\n'
+                    urineBagValue = int(float(urineBagValue))
+                    if (urineBagValue == 100):
+                        alertText += 'Urine Bag full! Please change it ASAP.' + '\n'
+                        try:
+                            if(not playAlert.is_playing()):
+                                playAlert = alert.play()
+                        except:
+                            playAlert = alert.play()
+                    elif (urineBagValue > 75):
+                        alertText += 'Urine Bag almost full! Please drain / change it.' + '\n'
+                        try:
+                            if(not playAlert.is_playing()):
+                                playAlert = alert.play()
+                        except:
+                            playAlert = alert.play()
             except:
                 print('Urine Bag Port: Garbage')
 
         self.alert.config(text = alertText)
+        previousAlert = alertText
 
         if (not weightDisconnected):
             serialWeight.flush()
