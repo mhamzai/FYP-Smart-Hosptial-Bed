@@ -125,7 +125,7 @@ void loop()
         digitalWrite(2, LOW); //led is off
       }
 
-      else if ((now()) - (set) > 300 and current >= 5 && !print_info) //if a change in the reading has not been detected in 9 secs, we generate an alert
+      else if ((now()) - (set) > 20 and current >= 5 && !print_info) //if a change in the reading has not been detected in 9 secs, we generate an alert
       {
         Serial.println();
    
