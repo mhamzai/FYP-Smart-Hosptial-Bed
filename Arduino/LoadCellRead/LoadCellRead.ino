@@ -190,7 +190,7 @@ void loop()
       if (is_change == true)
       {
         global_is_change = true;
-      }cu
+      }
 
     }
   }
