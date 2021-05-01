@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include <Wire.h>
 #include "SPIFFS.h"
 #include "FS.h"
 #include <HX711_ADC.h>
@@ -8,7 +9,7 @@
 #define CHANGE_THRESH 3
 #define HX711_dout 21 //mcu > HX711 dout pin
 #define HX711_sck 22  //mcu > HX711 sck pin
-
+//Wire Wire;
 //Variables
 
 time_t set; //a variable to get the current time using now()
@@ -54,6 +55,8 @@ void setup()
   Serial.println(second(set)); //printing the start time in seconds
   
   SPIFFS.begin(true);
+//  Wire.begin(8);
+  
   /*{
       break;
       //Serial.println(F("done."));
@@ -68,16 +71,16 @@ int _flag=0;
 void loop()
 {
   bool is_change = false;
-  //Serial.println("----");
   static boolean newDataReady = 0;
   const int serialPrintInterval = 0; //increase value to slow down serial print activity
-  
+ 
   //check for new data/start next conversion:
 
   if (LoadCell.update())
     newDataReady = true;
 
   //get smoothed value from the dataset:
+  
   if (newDataReady)
   {
     if (is_patient == true && millis() > t + serialPrintInterval)
@@ -139,7 +142,7 @@ void loop()
         print_info = true;
       }
 
-      else if (current < 5 && bag == 0 ) //a reading<5 indicates the absence of the bag
+      else if (current < 40 && bag == 0 ) //a reading<5 indicates the absence of the bag
       {
         a = "A bag needs to be installed";
 
@@ -147,7 +150,7 @@ void loop()
         print_info = true;
       }
 
-      else if (current < 5 && bag == 1 ) //bag has been removed
+      else if (current < 40 && bag == 1 ) //bag has been removed
       {
       
         _flag=2; //2 for BR, 1 for PP
@@ -159,7 +162,7 @@ void loop()
         bag = 2;
       }
 
-      if (current > 500 && bag == 1 && !print_info)
+      if (current > 2040 && bag == 1 && !print_info)
       {
 
         a = "";
@@ -187,7 +190,7 @@ void loop()
       if (is_change == true)
       {
         global_is_change = true;
-      }
+      }cu
 
     }
   }
@@ -199,13 +202,13 @@ void WriteCapacity(float curr)
 { 
   if(_flag==0)
   {
-    if (curr / 5 < 0)
+    if (curr / 20.4 < 0)
     {
       Serial.println(0);
     }
-    else if (curr / 5 <= 100)
+    else if (curr / 20.4 <= 100)
     {
-      Serial.println(int(curr/5));
+      Serial.println(int(curr/20.4));
     }
     else
     {
@@ -223,3 +226,31 @@ void WriteCapacity(float curr)
   }
 
 }
+/*
+
+void receiveEvent()
+{
+  Serial.println("something came here!");
+  //String i2cData = "";
+  String serialRead="";
+  byte values[24];
+  int i=0;
+  
+  if ((char)Wire.read() != '<')
+  { return;
+  }
+  while(1 < Wire.available()) // loop through all but the last
+  {
+    
+    values[i]=(char)Wire.read();
+    i++;
+  }
+  if ((char)Wire.read() != '>')
+  {serialRead = ""; return;}
+  Serial.print("gen str ==>> ");
+  for(int j=0;j<24;j++)
+  {
+    Serial.println(values[j]);
+    }
+}
+*/
