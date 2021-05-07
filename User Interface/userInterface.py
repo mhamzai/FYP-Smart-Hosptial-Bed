@@ -1,6 +1,9 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import *  
+import time
+import sys
+from threading import *
 import os
 import cv2
 from PIL import ImageTk, Image
@@ -48,7 +51,7 @@ class smartBedUI:
         self.bg = tk.Canvas(self.frame_1)
         self.bg.config(bg = '#000000')
         self.bg.place(anchor = 'nw', height = str(self.windowHeight), width = str(self.windowWidth), x = '0', y = '0')
-        self.bgImg = ImageTk.PhotoImage(Image.open(self.uiPath + 'alert.png').resize((1, 1)))
+        self.bgImg = ImageTk.PhotoImage(Image.open(self.uiPath + 'bg.jpg').resize((self.windowWidth, self.windowHeight)))
         self.bgOnCanvas = self.bg.create_image(0, 0, anchor = NW, image = self.bgImg)
         self.bg.create_text(int(self.cellSize*2.5), int(self.cellSize*1.125), fill = '#ffffff', font = (None, int(self.cellSize*0.35)), text = 'Weight Distribution')
         self.bg.create_text(int(self.cellSize*7.25), int(self.cellSize*1.125), fill = '#ffffff', font = (None, int(self.cellSize*0.35)), text = 'Heat Map')
@@ -173,12 +176,20 @@ class smartBedUI:
             self.unoccupiedTone = sa.WaveObject.from_wave_file(self.uiPath + 'unoccupied.wav')
             self.alertTone = sa.WaveObject.from_wave_file(self.uiPath + 'alert.wav')
 
-            self.update()
-            self.updateWeight()
-            self.updateTemp()
-            self.updateUrineBag()
+            self.updateThread = Thread(target = self.update)
+            self.updateThread.daemon = True
+            self.updateThread.start()
+            self.weightThread = Thread(target = self.updateWeight)
+            self.weightThread.daemon = True
+            self.weightThread.start()
+            self.tempThread = Thread(target = self.updateTemp)
+            self.tempThread.daemon = True
+            self.tempThread.start()
+            self.urineBagThread = Thread(target = self.updateUrineBag)
+            self.urineBagThread.daemon = True
+            self.urineBagThread.start()
 
-
+            
     def run(self):
         self.mainwindow.mainloop()
 
@@ -192,193 +203,157 @@ class smartBedUI:
 
 
     def update(self):
-        global playAlert
-
-        try:
-            if (self.bgVid == 'bgMain.mp4' and playAlert.is_playing()):
-                self.bgVid == 'bgWarn.mp4'
-                self.cap = cv2.VideoCapture(self.uiPath + self.bgVid)
-            elif (self.bgVid == 'bgWarn.mp4' and not (playAlert.is_playing())):
-                self.bgVid == 'bgMain.mp4'
-                self.cap = cv2.VideoCapture(self.uiPath + self.bgVid)
-        except:
-            pass
-        
-        try:
-            _, frame = self.cap.read()
-            cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-            self.bgImg = ImageTk.PhotoImage(Image.fromarray(cv2image).resize((self.windowWidth, self.windowHeight), Image.ANTIALIAS))
-            self.bg.itemconfig(self.bgOnCanvas, image = self.bgImg)
-        except:
-            self.cap = cv2.VideoCapture(self.uiPath + self.bgVid)
-
-        combinedAlert = self.alertText[0] + self.alertText[1] + self.alertText[2]
-        combinedAlert = combinedAlert.rstrip('\n')
-        self.alert.config(text = combinedAlert)
-
-        self.mainwindow.after(42, self.update)
-        
-        
-    def updateWeight(self):
-        global serialWeight
         global weightDisconnected
-        global playAlert
-        self.alertText[0] = ''
-
-        if (weightDisconnected):
-            self.alertText[0] += 'Weight module disconnected!' + '\n'
-        else:
-            weightJSON = serialWeight.readline().decode().strip()
-
-            while (not weightJSON.startswith('{')):
-                print('Weight Port:', weightJSON)
-                weightJSON = serialWeight.readline().decode().strip()
-
-            print('Weight Port:', weightJSON)
-            weightDict = json.loads(weightJSON)
-            wt = weightDict['weight']
-
-            if (wt == 0.00):
-                self.isOccupied = False
-                wt = '-- to --'
-                self.weight.config(text = wt)
-                self.alertText[0] += 'Unoccupied' + '\n'
-                if (not('Unoccupied' in self.previousAlert[0])):
-                    try:
-                        if (not playUnoccupied.is_playing()):
-                            playUnoccupied = self.unoccupiedTone.play()
-                    except:
-                        playUnoccupied = self.unoccupiedTone.play()
-            else:
-                self.isOccupied = True
-                wt = str(round(wt)-5) + ' to ' + str(round(wt)+5)
-                self.weight.config(text = wt)
-                self.alertText[0] += 'Patient on bed' + '\n'
-                if (not('Patient on bed' in self.previousAlert[0])):
-                    try:
-                        if (not playOccupied.is_playing()):
-                            playOccupied = self.occupiedTone.play()
-                    except:
-                        playOccupied = self.occupiedTone.play()
-            
-            diffs = weightDict['diff']
-            for i in range (24):
-                diff = int(float(diffs[i]) * 2)
-
-                if (diff < 0):
-                    diff = 0
-
-                hexVal = hex(diff).lstrip('0x').rstrip('L')
-
-                if (len(hexVal) == 1):
-                    hexVal = '0' + hexVal
-                elif (len(hexVal) == 3):
-                    hexVal = 'ff'
-                elif (len(hexVal) == 0):
-                    hexVal = '00'
-
-                color = '#' + hexVal + '0000'
-                self.contour[i].config(bg = color)
-
-            if (self.isOccupied):
-                weightAlert = weightDict['msg']
-
-                if (weightAlert != ''):
-                    self.alertText[0] += 'Patient hasn\'t been repositioned! Please do it.' + '\n'
-
-                    try:
-                        if (not playAlert.is_playing()):
-                            playAlert = self.alertTone.play()
-                    except:
-                        playAlert = self.alertTone.play()
-
-            self.previousAlert[0] = self.alertText[0]
-
-            serialWeight.flush()
-            serialWeight.flushInput()
-            serialWeight.flushOutput()
-
-        self.mainwindow.after(42, self.updateWeight)
-
-
-    def updateTemp(self):
-        global serialTemp
         global tempDisconnected
-        global playAlert
-        self.alertText[1] = ''
-
-        if (tempDisconnected):
-            self.alertText[1] += 'Temperature module disconnected!' + '\n'
-        else:
-            if (self.firstTemp):
-                self.firstTemp = False
-                bedMat = np.zeros((80, 36, 3))
-                x, y = np.ogrid[:80, :36]
-                c1Mask = (x - 9)**2 + (y - 17)**2 <= 17**2
-                c2Mask = (x - 12)**2 + (y - 17)**2 <= 17**2
-                c3Mask = (x - 15)**2 + (y - 17)**2 <= 18**2
-                bedMat[c1Mask] = 1
-                bedMat[c2Mask] = 2
-                bedMat[c3Mask] = 3
-                bedMat[np.where(np.logical_and(c1Mask == True, c2Mask == True))] = 12
-                bedMat[np.where(np.logical_and(c1Mask == True, c3Mask == True))] = 13
-                bedMat[np.where(np.logical_and(c2Mask == True, c3Mask == True))] = 23
-                bedMat[np.where(np.logical_and(np.logical_and(c1Mask == True, c2Mask == True), c3Mask == True))] = 123
-
-            if (not self.isOccupied):
-                tempValue = serialTemp.readline().decode().strip()
-                print('Temperature Port:', tempValue)
-                msg = np.array(tempValue.split(','), dtype = float)
-
-                for i in range(80):
-                    for j in range(36):
-
-                        if (bedMat[i][j][0] == 1.0):
-                            bedMat[i][j][0] = msg[0]        
-                        elif (bedMat[i][j][0] == 2.0):
-                            bedMat[i][j][0] = msg[1]
-                        elif (bedMat[i][j][0] == 3.0):
-                            bedMat[i][j][0] = msg[2]
-                        elif (bedMat[i][j][0] == 12.0):
-                            bedMat[i][j][0] = (msg[0] + msg[1]) / 2
-                        elif (bedMat[i][j][0] == 13.0):
-                            bedMat[i][j][0] = (msg[0] + msg[2]) / 2
-                        elif (bedMat[i][j][0] == 23.0):
-                            bedMat[i][j][0] = (msg[1] + msg[2]) / 2
-                        elif (bedMat[i][j][0] == 123.0):
-                            bedMat[i][j][0] = (msg[0] + msg[1] + msg[2]) / 3
-
-                heatMapArray = int(bedMat * 6)
-                self.heatMapImg = ImageTk.PhotoImage(Image.fromarray(heatMapArray, 'RGB').resize((int(self.cellSize*5.25), int(self.cellSize*4)), Image.ANTIALIAS))
-                self.heatMap.itemconfig(self.mapOnCanvas, image = self.heatMapImg)
-
-            self.previousAlert[1] = self.alertText[1]
-
-            serialTemp.flush()
-            serialTemp.flushInput()
-            serialTemp.flushOutput()
-
-        self.mainwindow.after(42, self.updateTemp)
-
-
-    def updateUrineBag(self):
-        global serialUrineBag
         global urineDisconnected
         global playAlert
-        self.alertText[2] = ''
 
-        if (urineDisconnected):
-            self.alertText[2] += 'Urine bag module disconnected!' + '\n'
-        else:
+        while (True):
             try:
-                urineBagValue = serialUrineBag.readline().decode().strip()
-                print('Urine Bag Port:', urineBagValue)
+                if (self.bgVid == 'bgMain.mp4' and playAlert.is_playing()):
+                    self.bgVid == 'bgWarn.mp4'
+                    self.cap = cv2.VideoCapture(self.uiPath + self.bgVid)
+                elif (self.bgVid == 'bgWarn.mp4' and not (playAlert.is_playing())):
+                    self.bgVid == 'bgMain.mp4'
+                    self.cap = cv2.VideoCapture(self.uiPath + self.bgVid)
+            except:
+                pass
+            
+            try:
+                _, frame = self.cap.read()
+                cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+                self.bgImg = ImageTk.PhotoImage(Image.fromarray(cv2image).resize((self.windowWidth, self.windowHeight), Image.ANTIALIAS))
+                self.bg.itemconfig(self.bgOnCanvas, image = self.bgImg)
+                self.bg.image = self.bgImg
+            except:
+                self.cap = cv2.VideoCapture(self.uiPath + self.bgVid)
 
+
+            if (weightDisconnected):
+                self.alertText[0] = ''
+                self.alertText[0] += 'Weight module disconnected!' + '\n'
+            else:
+                if (self.weightJSON.startswith('{')):
+                    self.alertText[0] = ''
+                    weightDict = json.loads(self.weightJSON)
+                    wt = weightDict['weight']
+
+                    if (wt == 0.00):
+                        wt = '-- to --'
+                        self.weight.config(text = wt)
+                        self.alertText[0] += 'Unoccupied' + '\n'
+                        if (not('Unoccupied' in self.previousAlert[0]) and self.isOccupied == True):
+                            try:
+                                if (not playUnoccupied.is_playing()):
+                                    playUnoccupied = self.unoccupiedTone.play()
+                            except:
+                                playUnoccupied = self.unoccupiedTone.play()
+                        self.isOccupied = False
+                    else:
+                        self.isOccupied = True
+                        wt = str(round(wt)-5) + ' to ' + str(round(wt)+5)
+                        self.weight.config(text = wt)
+                        self.alertText[0] += 'Patient on bed' + '\n'
+                        if (not('Patient on bed' in self.previousAlert[0])):
+                            try:
+                                if (not playOccupied.is_playing()):
+                                    playOccupied = self.occupiedTone.play()
+                            except:
+                                playOccupied = self.occupiedTone.play()
+                    
+                    diffs = weightDict['diff']
+                    for i in range (24):
+                        diff = int(float(diffs[i]) * 2)
+
+                        if (diff < 0):
+                            diff = 0
+
+                        hexVal = hex(diff).lstrip('0x').rstrip('L')
+
+                        if (len(hexVal) == 1):
+                            hexVal = '0' + hexVal
+                        elif (len(hexVal) == 3):
+                            hexVal = 'ff'
+                        elif (len(hexVal) == 0):
+                            hexVal = '00'
+
+                        color = '#' + hexVal + '0000'
+                        self.contour[i].config(bg = color)
+
+                    if (self.isOccupied):
+                        weightAlert = weightDict['msg']
+
+                        if (weightAlert != ''):
+                            self.alertText[0] += 'Patient hasn\'t been repositioned! Please do it.' + '\n'
+
+                            try:
+                                if (not playAlert.is_playing()):
+                                    playAlert = self.alertTone.play()
+                            except:
+                                playAlert = self.alertTone.play()
+
+                    self.previousAlert[0] = self.alertText[0]
+
+                    
+            self.alertText[1] = ''
+
+            if (tempDisconnected):
+                self.alertText[1] += 'Temperature module disconnected!' + '\n'
+            else:
+                if (self.firstTemp):
+                    self.firstTemp = False
+                    self.bedMat = np.zeros((80, 36))
+                    self.heatMapArray = np.zeros((self.bedMat.shape[0], self.bedMat.shape[1], 3), dtype='uint8')
+                    x, y = np.ogrid[:80, :36]
+                    c1Mask = (x - 9)**2 + (y - 17)**2 <= 17**2
+                    c2Mask = (x - 12)**2 + (y - 17)**2 <= 17**2
+                    c3Mask = (x - 15)**2 + (y - 17)**2 <= 18**2
+                    self.bedMat[c1Mask] = 1
+                    self.bedMat[c2Mask] = 2
+                    self.bedMat[c3Mask] = 3
+                    self.bedMat[np.where(np.logical_and(c1Mask == True, c2Mask == True))] = 12
+                    self.bedMat[np.where(np.logical_and(c1Mask == True, c3Mask == True))] = 13
+                    self.bedMat[np.where(np.logical_and(c2Mask == True, c3Mask == True))] = 23
+                    self.bedMat[np.where(np.logical_and(np.logical_and(c1Mask == True, c2Mask == True), c3Mask == True))] = 123
+
+                if (self.isOccupied):
+                    msg = np.array(self.tempValue.split(','), dtype = float)
+
+                    for i in range(self.bedMat.shape[0]):
+                        for j in range(self.bedMat.shape[1]):
+
+                            if (self.bedMat[i][j] == 1.0):
+                                self.bedMat[i][j] = msg[0]        
+                            elif (self.bedMat[i][j] == 2.0):
+                                self.bedMat[i][j] = msg[1]
+                            elif (self.bedMat[i][j] == 3.0):
+                                self.bedMat[i][j] = msg[2]
+                            elif (self.bedMat[i][j] == 12.0):
+                                self.bedMat[i][j] = (msg[0] + msg[1]) / 2
+                            elif (self.bedMat[i][j] == 13.0):
+                                self.bedMat[i][j] = (msg[0] + msg[2]) / 2
+                            elif (self.bedMat[i][j] == 23.0):
+                                self.bedMat[i][j] = (msg[1] + msg[2]) / 2
+                            elif (self.bedMat[i][j] == 123.0):
+                                self.bedMat[i][j] = (msg[0] + msg[1] + msg[2]) / 3
+
+                    self.heatMapArray[:, :, 0] = (self.bedMat * 6).astype(int)
+                    self.heatMapImg = ImageTk.PhotoImage(Image.fromarray(self.heatMapArray, 'RGB').resize((int(self.cellSize*4)+1, int(self.cellSize*4*2.22)+1), Image.ANTIALIAS))
+                    self.heatMap.itemconfig(self.mapOnCanvas, image = self.heatMapImg)
+
+                self.previousAlert[1] = self.alertText[1]
+
+
+            self.alertText[2] = ''
+
+            if (urineDisconnected):
+                self.alertText[2] += 'Urine bag module disconnected!' + '\n'
+            else:
                 if (not self.isOccupied):
                     self.urinebag.config(text = '--')
                 else:
 
-                    if (urineBagValue == '-1'):
+                    if (self.urineBagValue == '-1'):
                         self.urinebag.config(text = '--')
                         self.alertText[2] += 'Urine Bag removed! Please attach one.' + '\n'
 
@@ -389,7 +364,7 @@ class smartBedUI:
                             except:
                                 playAlert = self.alertTone.play()
 
-                    elif (urineBagValue == 'PP'):
+                    elif (self.urineBagValue == 'PP'):
                         self.alertText[2] += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
 
                         try:
@@ -398,11 +373,11 @@ class smartBedUI:
                         except:
                             playAlert = self.alertTone.play()
 
-                    elif (urineBagValue.isnumeric()):
-                        self.urinebag.config(text = urineBagValue)
-                        urineBagValue = int(float(urineBagValue))
+                    elif (self.urineBagValue.isnumeric()):
+                        self.urinebag.config(text = self.urineBagValue)
+                        self.urineBagValue = int(float(self.urineBagValue))
 
-                        if (urineBagValue == 100):
+                        if (self.urineBagValue == 100):
                             self.alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
 
                             try:
@@ -411,7 +386,7 @@ class smartBedUI:
                             except:
                                 playAlert = self.alertTone.play()
 
-                        elif (urineBagValue > 80):
+                        elif (self.urineBagValue > 80):
                             self.alertText[2] += 'Urine Bag almost full! Please drain / change it.' + '\n'
 
                             try:
@@ -420,20 +395,59 @@ class smartBedUI:
                             except:
                                 playAlert = self.alertTone.play()
 
-            except:
-                print('Urine Bag Port: Garbage')
-
             self.previousAlert[2] = self.alertText[2]
 
-            serialUrineBag.flush()
-            serialUrineBag.flushInput()
-            serialUrineBag.flushOutput()
 
-        self.mainwindow.after(42, self.updateUrineBag)
+            combinedAlert = self.alertText[0] + self.alertText[1] + self.alertText[2]
+            combinedAlert = combinedAlert.rstrip('\n')
+            self.alert.config(text = combinedAlert)
+
+            time.sleep(0.042)
 
 
+    def updateWeight(self):
+        global weightDisconnected
+        global serialWeight
+
+
+        while (True):
+            if (not weightDisconnected):
+                self.weightJSON = serialWeight.readline().decode().strip()
+                print('Weight Port:', self.weightJSON)
+            else:
+                time.sleep(0.042)
+
+
+    def updateTemp(self):
+        global tempDisconnected
+        global serialTemp
+
+        while (True):
+            if (not tempDisconnected):
+                self.tempValue = serialTemp.readline().decode().strip()
+                print('Temperature Port:', self.tempValue)
+            else:
+                time.sleep(0.042)
+
+
+    def updateUrineBag(self):
+        global urineDisconnected
+        global serialUrineBag
+        
+        while (True):
+            if (not urineDisconnected):
+                try:
+                    self.urineBagValue = serialUrineBag.readline().decode().strip()
+                    print('Urine Bag Port:', self.urineBagValue)
+                except:
+                    print('Urine Bag Port: Garbage')
+            else:
+                time.sleep(0.042)
+
+                
 if __name__ == '__main__':
     root = tk.Tk()
     root.attributes('-fullscreen', True)
     app = smartBedUI(root)
     app.run()
+    sys.exit()
