@@ -59,18 +59,12 @@ void loop()
 {
   bool is_change = false;
   int ret=0;
-  //if (isReceive)
-    //{ Serial.println("herere");
-      //  ret=receiveEvent(0);
-      //isReceive=false;}
   static boolean newDataReady = 0;
   const int serialPrintInterval = 0; //increase value to slow down serial print activity
-  //check for new data/start next conversion:
 
   if (LoadCell.update())
     newDataReady = true;
 
-  //get smoothed value from the dataset:
 
   if (newDataReady && isReceive)
   {
@@ -113,7 +107,7 @@ void loop()
         digitalWrite(2, LOW); //led is off
       }
 
-      else if ((now()) - (set) > 20 and current >= 5 && !print_info) //if a change in the reading has not been detected in 9 secs, we generate an alert
+      else if ((now()) - (set) > 20 and current >= 40 && !print_info) //if a change in the reading has not been detected in 9 secs, we generate an alert
       {
         
 
@@ -126,7 +120,7 @@ void loop()
         print_info = true;
       }
 
-      else if (current < 40 && bag == 0 ) //a reading<5 indicates the absence of the bag
+      else if (current < 40 && bag == 0 ) //a reading<5 indicates the absence of the bag  ///40 here instead of 5
       {
         a = "A bag needs to be installed";
 
