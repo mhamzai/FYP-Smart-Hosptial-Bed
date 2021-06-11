@@ -12,6 +12,11 @@ import numpy as np
 import serial
 import simpleaudio as sa
 from PIL import Image, ImageTk
+from scipy.ndimage.filters import gaussian_filter
+import copy
+
+
+np.set_printoptions(threshold=sys.maxsize)
 
 
 class smartBedUI:
@@ -31,34 +36,25 @@ class smartBedUI:
         self.bg.config(bg='#000000')
         self.bg.place(anchor='nw', height=str(self.windowHeight),
                       width=str(self.windowWidth), x='0', y='0')
-        self.bgImg = ImageTk.PhotoImage(Image.open(
-            self.uiPath + 'bg.jpg').resize((self.windowWidth, self.windowHeight)))
+        self.bgImg = ImageTk.PhotoImage(
+            Image.open(self.uiPath + 'alert.png').resize((1, 1)))
         self.bgOnCanvas = self.bg.create_image(
             0, 0, anchor=NW, image=self.bgImg)
         self.bg.create_text(int(self.cellSize*2.5), int(self.cellSize*1.125), fill='#ffffff',
-                            font=(None, int(self.cellSize*0.35)), text='Weight Distribution')
+                            font=(None, int(self.cellSize*0.35)), text='Pressure Map')
         self.bg.create_text(int(self.cellSize*7.25), int(self.cellSize*1.125),
                             fill='#ffffff', font=(None, int(self.cellSize*0.35)), text='Heat Map')
         self.bg.create_text(int(self.cellSize*11.125), int(self.cellSize*1.125),
                             fill='#ffffff', font=(None, int(self.cellSize*0.35)), text='Pulse')
         self.frame_1_1 = ttk.Frame(self.frame_1)
-
-        self.contour = []
-        y = 0
-        index = 0
-        for i in range(6):
-            x = 0
-
-            for j in range(4):
-                self.contour.append(tk.Canvas(self.frame_1_1))
-                self.contour[index].config(bg='#000000')
-                self.contour[index].place(anchor='nw', height=str(
-                    self.cellSize*1.375), width=str(self.cellSize*1.375), x=str(x), y=str(y))
-                index += 1
-                x += self.cellSize*1.375
-
-            y += self.cellSize*1.375
-
+        self.pressureMap = tk.Canvas(self.frame_1_1)
+        self.pressureMap.config(bg='#000000')
+        self.pressureMap.place(anchor='nw', height=str(
+            self.cellSize*8.25), width=str(self.cellSize*5.5), x='0', y='0')
+        self.pressureMapImg = ImageTk.PhotoImage(
+            Image.open(self.uiPath + 'alert.png').resize((1, 1)))
+        self.pressureMapOnCanvas = self.pressureMap.create_image(
+            0, 0, anchor=NW, image=self.pressureMapImg)
         self.frame_1_1.place(anchor='nw', height=str(self.cellSize*8.25), width=str(
             self.cellSize*5.5), x=str(self.cellSize*0.5), y=str(self.cellSize*1.5))
         self.frame_1_2_3_4_5_6_7 = ttk.Frame(self.frame_1)
@@ -68,7 +64,7 @@ class smartBedUI:
             self.cellSize*5.25), width=str(self.cellSize*4), x='0', y='0')
         self.heatMapImg = ImageTk.PhotoImage(
             Image.open(self.uiPath + 'alert.png').resize((1, 1)))
-        self.mapOnCanvas = self.heatMap.create_image(
+        self.heatMapOnCanvas = self.heatMap.create_image(
             0, 0, anchor=NW, image=self.heatMapImg)
         self.frame_1_2_3_4_5_6_7.place(anchor='nw', height=str(
             self.cellSize*5.25), width=str(self.cellSize*4), x=str(self.cellSize*6.25), y=str(self.cellSize*1.5))
@@ -90,7 +86,7 @@ class smartBedUI:
         self.message_1.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
             self.cellSize*1.125), x=str(self.cellSize*1.125), y=str(self.cellSize*1.625))
         self.heartrate = tk.Label(self.frame_1_2_3, font=(
-            None, int(self.cellSize*0.8875)))
+            None, int(self.cellSize*0.625)))
         self.heartrate.config(bg='#000000', foreground='#00ff80', text='--')
         self.heartrate.place(anchor='nw', height=str(self.cellSize), width=str(
             self.cellSize*2.25), x='0', y=str(self.cellSize*0.675))
@@ -111,7 +107,7 @@ class smartBedUI:
         self.message_1_3.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
             self.cellSize*0.575), x=str(self.cellSize*1.625), y=str(self.cellSize*1.625))
         self.temperature = tk.Label(
-            self.frame_1_2_3_4, font=(None, int(self.cellSize*0.8875)))
+            self.frame_1_2_3_4, font=(None, int(self.cellSize*0.625)))
         self.temperature.config(bg='#000000', foreground='#ff0000', text='--')
         self.temperature.place(anchor='nw', height=str(self.cellSize), width=str(
             self.cellSize*2.25), x='0', y=str(self.cellSize*0.675))
@@ -153,7 +149,7 @@ class smartBedUI:
         self.message_1_5.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
             self.cellSize*0.575), x=str(self.cellSize*1.625), y=str(self.cellSize*2))
         self.urinebag = tk.Label(self.frame_1_2_3_4_5_6, font=(
-            None, int(self.cellSize*0.8875)))
+            None, int(self.cellSize*0.625)))
         self.urinebag.config(bg='#000000', foreground='#ffff00', text='--')
         self.urinebag.place(anchor='nw', height=str(self.cellSize), width=str(
             self.cellSize*2.25), x='0', y=str(self.cellSize*0.875))
@@ -219,10 +215,10 @@ class smartBedUI:
 
     def update(self):
         bgVid = 'bgMain.mp4'
-        isOccupied = False
+        self.isOccupied = False
         alertText = ['', '', '']
-        previousAlert = ['', '', '']
         alertMode = False
+        bagRemoved = False
 
         occupiedTone = sa.WaveObject.from_wave_file(
             self.uiPath + 'occupied.wav')
@@ -230,21 +226,28 @@ class smartBedUI:
             self.uiPath + 'unoccupied.wav')
         alertTone = sa.WaveObject.from_wave_file(self.uiPath + 'alert.wav')
 
-        bedMat = np.zeros((80, 36))
-        heatMapArray = np.zeros(
-            (bedMat.shape[0], bedMat.shape[1], 3), dtype='uint8')
+        pressureMapArray = np.zeros((600, 400, 3), dtype='uint8')
+        withoutPat = 0
+        withPat = [0, 0, 0, 0]
+        self.bedMat = np.zeros((80, 36))
+        heatMapArray = np.ones((80, 36, 3), dtype='uint8') * 100
         x, y = np.ogrid[:80, :36]
         c1Mask = (x - 9)**2 + (y - 17)**2 <= 17**2
         c2Mask = (x - 12)**2 + (y - 17)**2 <= 17**2
         c3Mask = (x - 15)**2 + (y - 17)**2 <= 18**2
-        bedMat[c1Mask] = 1
-        bedMat[c2Mask] = 2
-        bedMat[c3Mask] = 3
-        bedMat[np.where(np.logical_and(c1Mask == True, c2Mask == True))] = 12
-        bedMat[np.where(np.logical_and(c1Mask == True, c3Mask == True))] = 13
-        bedMat[np.where(np.logical_and(c2Mask == True, c3Mask == True))] = 23
-        bedMat[np.where(np.logical_and(np.logical_and(
+        self.bedMat[c1Mask] = 1
+        self.bedMat[c2Mask] = 2
+        self.bedMat[np.where(np.logical_and(
+            c1Mask == True, c2Mask == True))] = 12
+        self.bedMat[c3Mask] = 3
+        self.bedMat[np.where(np.logical_and(
+            c1Mask == True, c3Mask == True))] = 13
+        self.bedMat[np.where(np.logical_and(
+            c2Mask == True, c3Mask == True))] = 23
+        self.bedMat[np.where(np.logical_and(np.logical_and(
             c1Mask == True, c2Mask == True), c3Mask == True))] = 123
+        self.patTemp = [0, 0, 0]
+        self.tempScale = 1.125
 
         while (True):
             try:
@@ -276,9 +279,7 @@ class smartBedUI:
                 wt = '-- to --'
                 self.weight.config(text=wt)
 
-                for i in range(24):
-                    color = '#000000'
-                    self.contour[i].config(bg=color)
+                self.pressureMap.image = None
             else:
                 weightDict = self.weightJSON
                 if (weightDict.startswith('{')):
@@ -291,30 +292,31 @@ class smartBedUI:
                         self.weight.config(text=wt)
                         alertText[0] += 'Unoccupied' + '\n'
 
-                        if (not('Unoccupied' in previousAlert[0]) and isOccupied == True):
+                        if (self.isOccupied == True):
                             try:
                                 if (not playUnoccupied.is_playing()):
                                     playUnoccupied = unoccupiedTone.play()
                             except:
                                 playUnoccupied = unoccupiedTone.play()
 
-                        isOccupied = False
+                        self.isOccupied = False
                     else:
-                        isOccupied = True
                         wt = str(round(wt)-5) + ' to ' + str(round(wt)+5)
                         self.weight.config(text=wt)
                         alertText[0] += 'Patient on bed' + '\n'
 
-                        if (not('Patient on bed' in previousAlert[0])):
+                        if (self.isOccupied == False):
                             try:
                                 if (not playOccupied.is_playing()):
                                     playOccupied = occupiedTone.play()
                             except:
                                 playOccupied = occupiedTone.play()
 
+                        self.isOccupied = True
+
                         weightAlert = weightDict['msg']
 
-                        if (weightAlert != ''):
+                        if (weightAlert != '' and not weightAlert.startswith('Patient Moved after')):
                             alertText[0] += 'Patient hasn\'t been repositioned! Please do it.' + '\n'
 
                             try:
@@ -325,27 +327,19 @@ class smartBedUI:
 
                             alertMode = True
 
-                    diffs = weightDict['diff']
-
-                    for i in range(24):
-                        diff = int(float(diffs[i]) * 2)
-
-                        if (diff < 0):
-                            diff = 0
-
-                        hexVal = hex(diff).lstrip('0x').rstrip('L')
-
-                        if (len(hexVal) == 1):
-                            hexVal = '0' + hexVal
-                        elif (len(hexVal) == 3):
-                            hexVal = 'ff'
-                        elif (len(hexVal) == 0):
-                            hexVal = '00'
-
-                        color = '#' + hexVal + '0000'
-                        self.contour[i].config(bg=color)
-
-                    previousAlert[0] = alertText[0]
+                    diffs = np.array(weightDict['diff']).astype(np.int)
+                    activated = np.where(diffs > 24, 1, 0)
+                    diffs = diffs.reshape(6, 4) * 2
+                    resizedDiffs = copy.deepcopy(diffs)
+                    resizedDiffs = resizedDiffs.repeat(
+                        100, axis=0).repeat(100, axis=1)
+                    pressureMapArray[:, :, 0] = np.clip(
+                        gaussian_filter(resizedDiffs, sigma=32), 0, 255)
+                    self.pressureMapImg = ImageTk.PhotoImage(Image.fromarray(pressureMapArray, 'RGB').resize(
+                        (int(self.cellSize*5.5)+1, int(self.cellSize*8.25)+1), Image.ANTIALIAS))
+                    self.pressureMap.itemconfig(
+                        self.pressureMapOnCanvas, image=self.pressureMapImg)
+                    self.pressureMap.image = self.pressureMapImg
 
             alertText[1] = ''
 
@@ -356,39 +350,96 @@ class smartBedUI:
                 self.temperature.config(text=tp)
 
                 self.heatMap.image = None
-            else:
-                if (not isOccupied):
+            elif (self.tempValue != ''):
+                self.sensorBedMat = np.zeros((14, 4, 3))
+                self.bedMatTemp = np.zeros((80, 36))
+
+                msg = np.array(self.tempValue.split(","), dtype=float)
+
+                if (not self.isOccupied):
                     tp = '--'
                     self.temperature.config(text=tp)
-                else:
-                    msg = np.array(self.tempValue.split(','), dtype=float)
 
-                    for i in range(bedMat.shape[0]):
-                        for j in range(bedMat.shape[1]):
+                    if (len(msg) == 1):
+                        withoutPat = float(self.tempValue)
+                elif (len(msg) == 4):
+                    ambTemp = msg[0]
+                    withPat = msg[1:]
 
-                            if (bedMat[i][j] == 1.0):
-                                bedMat[i][j] = msg[0]
-                            elif (bedMat[i][j] == 2.0):
-                                bedMat[i][j] = msg[1]
-                            elif (bedMat[i][j] == 3.0):
-                                bedMat[i][j] = msg[2]
-                            elif (bedMat[i][j] == 12.0):
-                                bedMat[i][j] = (msg[0] + msg[1]) / 2
-                            elif (bedMat[i][j] == 13.0):
-                                bedMat[i][j] = (msg[0] + msg[2]) / 2
-                            elif (bedMat[i][j] == 23.0):
-                                bedMat[i][j] = (msg[1] + msg[2]) / 2
-                            elif (bedMat[i][j] == 123.0):
-                                bedMat[i][j] = (msg[0] + msg[1] + msg[2]) / 3
+                    sensorArea = 0
+                    for i in range(0, 4):
+                        if(activated[i]):
+                            sensorArea += 121.5
 
-                    heatMapArray[:, :, 0] = (bedMat * 6).astype(int)
-                    self.heatMapImg = ImageTk.PhotoImage(Image.fromarray(heatMapArray, 'RGB').resize(
-                        (int(self.cellSize*4)+1, int(self.cellSize*4*2.22)+1), Image.ANTIALIAS))
-                    self.heatMap.itemconfig(
-                        self.mapOnCanvas, image=self.heatMapImg)
-                    self.heatMap.image = self.heatMapImg
+                    for i in range(0, 8):
+                        if(activated[i]):
+                            if sensorArea == 0:
+                                self.sensorBedMat[i//4][i % 4][0] = 1
+                            else:
+                                self.sensorBedMat[i//4][i % 4][0] = (
+                                    withPat[0] - ((1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
+                            self.patTemp[0] = self.sensorBedMat[i//4][i % 4][0]
 
-                previousAlert[1] = alertText[1]
+                    sensorArea = 0
+                    for i in range(0, 8):
+                        if(activated[i]):
+                            sensorArea += 121.5
+
+                    for i in range(0, 8):
+                        if(activated[i]):
+                            if(i >= 4):
+                                if sensorArea == 0:
+                                    self.sensorBedMat[1][i-4][1] = 1
+                                else:
+                                    self.sensorBedMat[1][i-4][1] = (withPat[1] - (
+                                        (1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
+                                self.patTemp[1] = self.sensorBedMat[1][i-4][1]
+                            else:
+                                if sensorArea == 0:
+                                    self.sensorBedMat[0][i][1] = 1
+                                else:
+                                    self.sensorBedMat[0][i][1] = (withPat[1] - (
+                                        (1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
+                                self.patTemp[1] = self.sensorBedMat[0][i][1]
+
+                    sensorArea = 0
+                    for i in range(0, 8):
+                        if(activated[i]):
+                            sensorArea += 121.5
+
+                    for i in range(0, 8):
+                        if(activated[i]):
+                            if(i >= 4):
+                                if sensorArea == 0:
+                                    self.sensorBedMat[1][i-4][2] = 1
+                                else:
+                                    self.sensorBedMat[1][i-4][2] = (withPat[2] - (
+                                        (1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
+                                self.patTemp[2] = self.sensorBedMat[1][i-4][2]
+                            else:
+                                if sensorArea == 0:
+                                    self.sensorBedMat[0][i][2] = 1
+                                else:
+                                    self.sensorBedMat[0][i][2] = (withPat[2] - (
+                                        (1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
+                                self.patTemp[2] = self.sensorBedMat[0][i][2]
+
+                    for x in [0, 14]:
+                        for y in [0, 9, 18, 27]:
+                            self.FillMatrix(x, y, x//14, y//9, withoutPat)
+
+                    tp = (self.patTemp[0] * 0.5) + (self.patTemp[1]
+                                                    * 0.3) + (self.patTemp[2] * 0.2)
+                    tp = str(round(tp*self.tempScale, 1))
+                    self.temperature.config(text=tp)
+
+                heatMapArray[:, :, 0] = np.clip(gaussian_filter(
+                    self.bedMatTemp, sigma=3), 0, 360).astype(np.int)
+                self.heatMapImg = ImageTk.PhotoImage(Image.fromarray(heatMapArray, 'HSV').resize(
+                    (int(self.cellSize*4)+1, int(self.cellSize*4*2.22)+1), Image.ANTIALIAS))
+                self.heatMap.itemconfig(
+                    self.heatMapOnCanvas, image=self.heatMapImg)
+                self.heatMap.image = self.heatMapImg
 
             alertText[2] = ''
 
@@ -398,7 +449,7 @@ class smartBedUI:
                 ub = '--'
                 self.urinebag.config(text=ub)
             else:
-                if (not isOccupied):
+                if (not self.isOccupied):
                     ub = '--'
                     self.urinebag.config(text=ub)
                 else:
@@ -408,7 +459,7 @@ class smartBedUI:
                         self.urinebag.config(text=ub)
                         alertText[2] += 'Urine Bag removed! Please attach one.' + '\n'
 
-                        if (not('Urine Bag removed! Please attach one.' in previousAlert[2])):
+                        if (not bagRemoved):
                             try:
                                 if (not playAlert.is_playing()):
                                     playAlert = alertTone.play()
@@ -417,22 +468,13 @@ class smartBedUI:
 
                             alertMode = True
 
-                    elif (ub == 'PP'):
-                        alertText[2] += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
+                        bagRemoved = True
 
-                        try:
-                            if (not playAlert.is_playing()):
-                                playAlert = alertTone.play()
-                        except:
-                            playAlert = alertTone.play()
+                    else:
+                        bagRemoved = False
 
-                        alertMode = True
-
-                    elif (ub.isnumeric()):
-                        self.urinebag.config(text=ub)
-
-                        if (ub == '100'):
-                            alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
+                        if (ub == 'PP'):
+                            alertText[2] += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
 
                             try:
                                 if (not playAlert.is_playing()):
@@ -442,18 +484,30 @@ class smartBedUI:
 
                             alertMode = True
 
-                        elif (int(float(ub)) > 80):
-                            alertText[2] += 'Urine Bag almost full! Please drain / change it.' + '\n'
+                        elif (ub.isnumeric()):
+                            self.urinebag.config(text=ub)
 
-                            try:
-                                if (not playAlert.is_playing()):
+                            if (ub == '100'):
+                                alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
+
+                                try:
+                                    if (not playAlert.is_playing()):
+                                        playAlert = alertTone.play()
+                                except:
                                     playAlert = alertTone.play()
-                            except:
-                                playAlert = alertTone.play()
 
-                            alertMode = True
+                                alertMode = True
 
-            previousAlert[2] = alertText[2]
+                            elif (int(float(ub)) > 80):
+                                alertText[2] += 'Urine Bag almost full! Please drain / change it.' + '\n'
+
+                                try:
+                                    if (not playAlert.is_playing()):
+                                        playAlert = alertTone.play()
+                                except:
+                                    playAlert = alertTone.play()
+
+                                alertMode = True
 
             combinedAlert = alertText[0] + alertText[1] + alertText[2]
             combinedAlert = combinedAlert.rstrip('\n')
@@ -471,7 +525,7 @@ class smartBedUI:
                 print('Weight Port:', self.weightJSON)
             except:
                 try:
-                    serialWeight = serial.Serial('COM4')
+                    serialWeight = serial.Serial('COM8')
                     self.weightDisconnected = False
                 except:
                     self.weightDisconnected = True
@@ -484,11 +538,16 @@ class smartBedUI:
 
         while (True):
             try:
+                if (self.isOccupied):
+                    serialTemp.write(b'1')
+                else:
+                    serialTemp.write(b'0')
+
                 self.tempValue = serialTemp.readline().decode().strip()
                 print('Temperature Port:', self.tempValue)
             except:
                 try:
-                    serialTemp = serial.Serial('COM5')
+                    serialTemp = serial.Serial('COM3')
                     self.tempDisconnected = False
                 except:
                     self.tempDisconnected = True
@@ -505,12 +564,35 @@ class smartBedUI:
                 print('Urine Bag Port:', self.urineBagValue)
             except:
                 try:
-                    serialUrineBag = serial.Serial('COM7')
+                    serialUrineBag = serial.Serial('COM6')
                     self.urineDisconnected = False
                 except:
                     self.urineDisconnected = True
 
                 time.sleep(0.042)
+
+    def FillMatrix(self, x, y, anchorX, anchorY, withoutPat):
+        tempVal = self.sensorBedMat[anchorX][anchorY]
+
+        for i in range(x, x+14):
+            for j in range(y, y+9):
+                if(self.bedMat[i][j] > 0):
+                    if(tempVal.sum() > 0):
+                        if (str(self.bedMat[i][j]).find('1') != -1):
+                            self.bedMatTemp[i][j] += tempVal[0]
+
+                        if (str(self.bedMat[i][j]).find('2') != -1):
+                            self.bedMatTemp[i][j] += tempVal[1]
+
+                        if (str(self.bedMat[i][j]).find('3') != -1):
+                            self.bedMatTemp[i][j] += tempVal[2]
+
+                        self.bedMatTemp[i][j] /= len(
+                            str(int(self.bedMat[i][j])))
+                        self.bedMatTemp[i][j] = self.bedMatTemp[i][j] * \
+                            self.tempScale
+                    else:
+                        self.bedMatTemp[i][j] = withoutPat
 
 
 if __name__ == '__main__':
@@ -518,4 +600,20 @@ if __name__ == '__main__':
     root.attributes('-fullscreen', True)
     app = smartBedUI(root)
     app.run()
+
+    try:
+        app.serialWeight.close()
+    except:
+        pass
+
+    try:
+        app.serialTemp.close()
+    except:
+        pass
+
+    try:
+        app.serialUrineBag.close()
+    except:
+        pass
+
     sys.exit()

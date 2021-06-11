@@ -5,13 +5,16 @@ import serial
 import time
 
 
-np.set_printoptions(threshold=sys.maxsize)
+# np.set_printoptions(threshold=sys.maxsize)
 
 
+withoutPat = -1  # without patient temperature
+withPat = -1  # with patient tempearature
+sensorBedMat = ""
 
 
-#hardcoding the bed matrix
-bedMat = np.zeros((80, 36)) # 1 means circle is present, 0 means not present
+# hardcoding the bed matrix
+bedMat = np.zeros((80, 36))  # 1 means circle is present, 0 means not present
 x, y = np.ogrid[:80, :36]
 c1Mask = (x - 9)**2 + (y - 17)**2 <= 17**2
 c2Mask = (x - 12)**2 + (y - 17)**2 <= 17**2
@@ -19,116 +22,98 @@ c3Mask = (x - 15)**2 + (y - 17)**2 <= 18**2
 #c4Mask = (x - 19)**2 + (y - 17)**2 <= 19**2
 bedMat[c1Mask] = 1
 bedMat[c2Mask] = 2
-bedMat[np.where(np.logical_and(c1Mask == True,c2Mask == True))] = 12
+bedMat[np.where(np.logical_and(c1Mask == True, c2Mask == True))] = 12
 bedMat[c3Mask] = 3
-bedMat[np.where(np.logical_and(c1Mask == True,c3Mask == True))] = 13
-bedMat[np.where(np.logical_and(c2Mask == True,c3Mask == True))] = 23
-bedMat[np.where(np.logical_and(np.logical_and(c1Mask == True,c2Mask == True), c3Mask == True))] = 123
+bedMat[np.where(np.logical_and(c1Mask == True, c3Mask == True))] = 13
+bedMat[np.where(np.logical_and(c2Mask == True, c3Mask == True))] = 23
+bedMat[np.where(np.logical_and(np.logical_and(
+    c1Mask == True, c2Mask == True), c3Mask == True))] = 123
 
 
 bedMatTemp = np.copy(bedMat)
 
 
+def FillMatrix(x, y, anchorX, anchorY):
 
-#file = open("arr.txt", "w")
-#for i in range(80):
-#    for j in range(0, 36):
-#        file.write(str(bedMat[i][j]))
-#        file.write(" ")
-#    file.write("\n")
+    tempVal = sensorBedMat[anchorX][anchorY]
 
-#file.flush()
-#file.close()
+    for i in range(x, x+14):
+        for j in range(y, y+9):
+            if(bedMat[i][j] == 0):
+                bedMatTemp = tempVal
 
 
 tempSensed = serial.Serial('COM6')
 
+'''
+Considering two rows of sensors. Each row contains four sensors.
+The bed has 80 x 36 (inches) dimensions vertially and horizontally.
+Giving each sensor an area of 13.5x9 inches square = 121.5 inches square.
+Thus bed will be further visualized as 13.5 (~ 14) X 4 dimensions if seen
+from perspective of sensor area.
+'''
+
 
 while 1:
 
-    #msg =tempSensed.readline()
-    #print(msg.decode())
-    
-    #if(tempSensed.readline().decode() == "1\n"):
-    #    print("inside if\n")
-    #    tempSensed.write(b'2')
-    #else:
-    #    print("inside else\n")
-    #    continue
+    ###################################################################################################
+    ###### 0 index gives temperature without patient, 1-3 gives three average temperatures ############
+    ###### next 8 values give sensor activations ######################################################
+    ###################################################################################################
 
-    msg = tempSensed.readline().decode()
+    sensorBedMat = np.zeros((14, 4))  # sensor bed matrix
+
+    msg = tempSensed.readline().decode()  # data received from IR sensor
     msg = np.array(msg.split(","), dtype=float)
-    
-    
-    print(msg)
 
-    for i in range(0, 80):
-        for j in range(0, 36):
+    if not isOccupied:  # variable from Ammaar
+        withoutPat = msg[1]  # without patient temperature
+        continue
+    else:
+        withPat = msg[1:]  # with patient tempearature
 
-            if bedMat[i][j] == 1.0:
-                bedMatTemp[i][j] = msg[0]        
-            elif bedMat[i][j] == 2.0:
-                bedMatTemp[i][j] = msg[1]
-            elif bedMat[i][j] == 3.0:
-                bedMatTemp[i][j] = msg[2]
-            elif bedMat[i][j] == 12.0:
-                bedMatTemp[i][j] = (msg[0] + msg[1])/2
-            elif bedMat[i][j] == 13.0:
-                bedMatTemp[i][j] = (msg[0] + msg[2])/2
-            elif bedMat[i][j] == 23.0:
-                bedMatTemp[i][j] = (msg[1] + msg[2])/2
-            elif bedMat[i][j] == 123.0:
-                bedMatTemp[i][j] = (msg[0] + msg[1] + msg[2])/3
+    # for area 1 considering first row of sensors
+    sensorArea = 0
+    for i in range(0, 4):
+        if(activations[i]):
+            sensorArea += 121.5
 
-    
-    #file = open("arr.txt", "w")
-    #for i in range(0, 80):
-    #    for j in range(0, 36):
-    #        file.write(str(bedMatTemp[i][j]))
-    #        file.write(" ")
-    #    file.write("\n")
+    for i in range(0, 4):
+        if(activations[i]):
+            sensorBedMat[0][i] = (
+                withPat[0] - ((1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
 
-    #file.flush()
-    #file.close()
-    
+    # for area 2 considering 2 rows of sensors
+    sensorArea = 0
+    for i in range(0, 8):
+        if(activations[i]):
+            sensorArea += 121.5
 
-    plt.imshow(bedMatTemp)
-    plt.show()
+    for i in range(0, 8):
+        if(activations[i]):
+            if(i >= 4):
+                sensorBedMat[1][i-4] += (withPat[1] - ((1-(sensorArea/(121.5*4)))
+                                         * withoutPat)) / (sensorArea/(121.5*4))
+            else:
+                sensorBedMat[0][i] += (withPat[1] - ((1-(sensorArea/(121.5*4)))
+                                       * withoutPat)) / (sensorArea/(121.5*4))
 
-#credit goes to https://www.statology.org/matplotlib-circle/
+    # for area 3 considering 2 rows of sensors
+    sensorArea = 0
+    for i in range(0, 8):
+        if(activations[i]):
+            sensorArea += 121.5
 
-#this creates an empty graph of bed's dimensions
-plt.axis([-20, 80, -40, 100])
-plt.axis("equal")
+    for i in range(0, 8):
+        if(activations[i]):
+            if(i >= 4):
+                sensorBedMat[1][i-4] += (withPat[2] - ((1-(sensorArea/(121.5*4)))
+                                         * withoutPat)) / (sensorArea/(121.5*4))
+            else:
+                sensorBedMat[0][i] += (withPat[2] - ((1-(sensorArea/(121.5*4)))
+                                       * withoutPat)) / (sensorArea/(121.5*4))
 
-#defining circles
-c1 = plt.Circle((17, 9), radius = 17, color = "red", alpha = 1) # 0 degree
-c2 = plt.Circle((17, 11.9977), radius = 17.26, color = "orange", alpha = 0.7) # 5 degree
-c3 = plt.Circle((17, 15.19), radius = 18.09, color = "yellow", alpha = 0.6) # 10 degree
-c4 = plt.Circle((17, 18.815), radius = 19.63, color = "black", alpha = 0.4) # 15 degree
-c5 = plt.Circle((17, 23.2645), radius = 22.1915, color = "blue", alpha = 0.3) # 20 degree
-c6 = plt.Circle((17, 38.4499), radius = 33.9999, color = "green", alpha = 0.2) # 30 degree
-bed = plt.Rectangle((0,0), 36, 80, color = "purple", alpha = 0.4) # bed visualization
+    for x in [0, 14]:
+        for y in [0, 9, 18, 27]:
 
-
-
-#adding circles to the graph
-#plt.gca().add_artist(c6)
-#plt.gca().add_artist(c5)
-#plt.gca().add_artist(c4)
-plt.gca().add_artist(c3)
-plt.gca().add_artist(c2)
-plt.gca().add_artist(c1)
-plt.gca().add_artist(bed)
-
-
-#showing the graph
-plt.show()
-
-#plt.imshow(c1Mask)
-#plt.imshow(c2Mask)
-#plt.imshow(c3Mask)
-#plt.imshow(c4Mask)
-#plt.imshow(bedMat)
-#plt.show()
-#print(bedMat)
+            FillMatrix(x, y, x/7, y/9)
