@@ -1,0 +1,12 @@
+{"bedLog": [{"timestamp": "2021-06-19 19:03:16", "ubPercent": 0, "tempReading": 85, "patientTurned": true, "ubRemoved": true}]}
+
+{"bedLog": [{"timestamp": "2021-06-19 19:04:28", "ubPercent": 0, "tempReading": 85, "patientTurned": true, "ubRemoved": true}]}
+
+{"bedLog": [{"timestamp": "2021-06-19 19:58:25", "ubPercent": 0, "tempReading": 99, "patientTurned": false, "ubRemoved": false}]}
+
+{"bedLog": [{"timestamp": "2021-06-19 19:58:30", "ubPercent": 0, "tempReading": 98, "patientTurned": true, "ubRemoved": false}]}
+
+{"bedLog": [{"timestamp": "2021-06-19 19:59:04", "ubPercent": 0, "tempReading": 96, "patientTurned": true, "ubRemoved": false}]}
+
+{"bedLog": [{"timestamp": "2021-06-19 19:59:29", "ubPercent": 1, "tempReading": 99, "patientTurned": true, "ubRemoved": false}]}
+

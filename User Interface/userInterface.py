@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import sys
@@ -13,7 +14,6 @@ import serial
 import simpleaudio as sa
 from PIL import Image, ImageTk
 from scipy.ndimage.filters import gaussian_filter
-
 
 np.set_printoptions(threshold=sys.maxsize)
 
@@ -218,7 +218,7 @@ class smartBedUI:
         pressureMapArray = np.zeros((600, 400, 3), dtype='uint8')
         alertText = ['', '', '']
         alertMode = False
-        bagRemoved = False
+        ubRemoved = False
         self.withoutPat = 0
         withPat = [0, 0, 0, 0]
         self.bedMat = np.zeros((80, 36))
@@ -245,6 +245,13 @@ class smartBedUI:
         unoccupiedTone = sa.WaveObject.from_wave_file(
             self.uiPath + 'unoccupied.wav')
         alertTone = sa.WaveObject.from_wave_file(self.uiPath + 'alert.wav')
+        loopCount = 0
+        log = {}
+        log['bedLog'] = []
+        ubPercent = 0
+        tempReading = 98
+        turnAlert = False
+        patientTurned = False
 
         while (True):
             try:
@@ -324,6 +331,10 @@ class smartBedUI:
                                 playAlert = alertTone.play()
 
                             alertMode = True
+                            turnAlert = True
+                        elif (turnAlert):
+                            turnAlert = False
+                            patientTurned = True
 
                     diffs = np.array(weightDict['diff']).astype(np.int)
                     activated = np.where(diffs > 24, 1, 0)
@@ -348,7 +359,7 @@ class smartBedUI:
                 self.sensorBedMat = np.zeros((14, 4, 3))
                 self.bedMatTemp = np.zeros((80, 36))
 
-                msg = np.array(self.tempValue.split(","), dtype=float)
+                msg = np.array(self.tempValue.split(','), dtype=float)
 
                 if (not self.isOccupied):
                     tp = '--'
@@ -422,14 +433,13 @@ class smartBedUI:
                         for y in [0, 9, 18, 27]:
                             self.FillMatrix(x, y, x//14, y//9)
 
-                    tp = str(
-                        int((self.patTemp[0] * 0.5) + (self.patTemp[1] * 0.3) + (self.patTemp[2] * 0.2)))
+                    tp = str(int(
+                        ((self.patTemp[0] * 0.5) + (self.patTemp[1] * 0.3) + (self.patTemp[2] * 0.2)) * self.tempScale))
                     self.temperature.config(text=tp)
+                    tempReading = int(tp)
 
                 heatMapArray[:, :, 0] = np.clip(gaussian_filter(
                     115-self.bedMatTemp, sigma=2), 0, 179).astype(np.int)
-                #heatMapArray[:, :, 0] = np.clip(gaussian_filter(
-                #    (np.max(self.bedMatTemp)-self.bedMatTemp)*(179/np.max(self.bedMatTemp)), sigma=2), 0, 179).astype(np.int)
                 self.heatMapImg = ImageTk.PhotoImage(Image.fromarray(heatMapArray, 'HSV').resize(
                     (int(self.cellSize*4)+1, int(self.cellSize*4*2.22)+1), Image.ANTIALIAS))
                 self.heatMap.itemconfig(
@@ -455,7 +465,7 @@ class smartBedUI:
                         self.urinebag.config(text=ub)
                         alertText[2] += 'Urine Bag removed! Please attach one.' + '\n'
 
-                        if (not bagRemoved):
+                        if (not ubRemoved):
                             try:
                                 if (not playAlert.is_playing()):
                                     playAlert = alertTone.play()
@@ -464,9 +474,9 @@ class smartBedUI:
 
                             alertMode = True
 
-                        bagRemoved = True
+                        ubRemoved = True
                     else:
-                        bagRemoved = False
+                        ubRemoved = False
 
                         if (ub == 'PP'):
                             alertText[2] += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
@@ -480,6 +490,7 @@ class smartBedUI:
                             alertMode = True
                         elif (ub.isnumeric()):
                             self.urinebag.config(text=ub)
+                            ubPercent = int(float(ub))
 
                             if (ub == '100'):
                                 alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
@@ -507,7 +518,25 @@ class smartBedUI:
             combinedAlert = combinedAlert.rstrip('\n')
             self.alert.config(text=combinedAlert)
 
+            if (self.isOccupied and (loopCount >= 119 or patientTurned)):
+                loopCount = 0
+
+                log['bedLog'].append({
+                    'timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'ubPercent': ubPercent,
+                    'tempReading': tempReading,
+                    'patientTurned': patientTurned,
+                    'ubRemoved': ubRemoved
+                })
+
+                with open(self.uiPath+'log.txt', 'a') as logFile:
+                    json.dump(log, logFile)
+                    logFile.write('\n\n')
+
+            patientTurned = False
+            log['bedLog'] = []
             time.sleep(0.042)
+            loopCount += 1
 
     def updateWeight(self):
         self.weightDisconnected = True
