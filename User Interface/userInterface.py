@@ -22,163 +22,166 @@ class smartBedUI:
 
     def __init__(self, master=None, firstInit=True):
         self.master = master
-        self.frame_1 = ttk.Frame(self.master)
+        self.frameBg = ttk.Frame(self.master)
         self.windowWidth = self.master.winfo_width()
         self.windowHeight = self.master.winfo_height()
-        self.cellSize = self.windowHeight / 10.75
 
         if (firstInit):
             self.uiPath = os.path.realpath(
                 __file__).replace('userInterface.py', '')
 
-        self.bg = tk.Canvas(self.frame_1)
+        self.bg = tk.Canvas(self.frameBg)
         self.bg.config(bg='#000000')
         self.bg.place(anchor='nw', height=str(self.windowHeight),
                       width=str(self.windowWidth), x='0', y='0')
-        self.bgImg = ImageTk.PhotoImage(
-            Image.open(self.uiPath + 'alert.png').resize((1, 1)))
+        self.imageBg = ImageTk.PhotoImage(Image.open(
+            self.uiPath + 'alert.png').resize((1, 1)))
         self.bgOnCanvas = self.bg.create_image(
-            0, 0, anchor=NW, image=self.bgImg)
-        self.bg.create_text(int(self.cellSize*2), int(self.cellSize*1.125), fill='#ffffff',
-                            font=(None, int(self.cellSize*0.35)), text='Pressure Map')
-        self.bg.create_text(int(self.cellSize*7.25), int(self.cellSize*1.125),
-                            fill='#ffffff', font=(None, int(self.cellSize*0.35)), text='Heat Map')
-        self.bg.create_text(int(self.cellSize*11.125), int(self.cellSize*1.125),
-                            fill='#ffffff', font=(None, int(self.cellSize*0.35)), text='Pulse')
-        self.frame_1_1 = ttk.Frame(self.frame_1)
-        self.pressureMap = tk.Canvas(self.frame_1_1)
+            0, 0, anchor=NW, image=self.imageBg)
+        self.bg.create_text(int(self.windowWidth/11), int(self.windowHeight/9.25), fill='#ffffff',
+                            font=(None, int((self.windowWidth+self.windowHeight)/100)), text='Pressure Map')
+        self.bg.create_text(int(self.windowWidth/2.7), int(self.windowHeight/9.25), fill='#ffffff',
+                            font=(None, int((self.windowWidth+self.windowHeight)/100)), text='Heat Map')
+        self.bg.create_text(int(self.windowWidth/1.741), int(self.windowHeight/9.25), fill='#ffffff',
+                            font=(None, int((self.windowWidth+self.windowHeight)/100)), text='Pulse')
+        self.framePMap = ttk.Frame(self.frameBg)
+        self.pressureMap = tk.Canvas(self.framePMap)
         self.pressureMap.config(bg='#000000')
         self.pressureMap.place(anchor='nw', height=str(
-            self.cellSize*8.25), width=str(self.cellSize*5.5), x='0', y='0')
+            int(self.windowHeight/1.3)), width=str(int(self.windowWidth/3.5)), x='0', y='0')
         self.pressureMapImg = ImageTk.PhotoImage(
             Image.open(self.uiPath + 'alert.png').resize((1, 1)))
-        self.pressureMapOnCanvas = self.pressureMap.create_image(
+        self.pMapOnCanvas = self.pressureMap.create_image(
             0, 0, anchor=NW, image=self.pressureMapImg)
-        self.frame_1_1.place(anchor='nw', height=str(self.cellSize*8.25), width=str(
-            self.cellSize*5.5), x=str(self.cellSize*0.5), y=str(self.cellSize*1.5))
-        self.frame_1_2_3_4_5_6_7 = ttk.Frame(self.frame_1)
-        self.heatMap = tk.Canvas(self.frame_1_2_3_4_5_6_7)
+        self.framePMap.place(anchor='nw', height=str(int(self.windowHeight/1.3)), width=str(int(
+            self.windowWidth/3.5)), x=str(int(self.windowWidth/35)), y=str(int(self.windowHeight/7.25)))
+        self.frameHMap = ttk.Frame(self.frameBg)
+        self.heatMap = tk.Canvas(self.frameHMap)
         self.heatMap.config(bg='#000000')
         self.heatMap.place(anchor='nw', height=str(
-            self.cellSize*5.25), width=str(self.cellSize*4), x='0', y='0')
+            int(self.windowHeight/2.05)), width=str(int(self.windowWidth/4.75)), x='0', y='0')
         self.heatMapImg = ImageTk.PhotoImage(
             Image.open(self.uiPath + 'alert.png').resize((1, 1)))
-        self.heatMapOnCanvas = self.heatMap.create_image(
+        self.hMapOnCanvas = self.heatMap.create_image(
             0, 0, anchor=NW, image=self.heatMapImg)
-        self.frame_1_2_3_4_5_6_7.place(anchor='nw', height=str(
-            self.cellSize*5.25), width=str(self.cellSize*4), x=str(self.cellSize*6.25), y=str(self.cellSize*1.5))
-        self.frame_1_2 = ttk.Frame(self.frame_1)
-        self.canvas_1_1 = tk.Canvas(self.frame_1_2)
-        self.canvas_1_1.config(bg='#000000')
-        self.canvas_1_1.place(anchor='nw', height=str(
-            self.cellSize*2.75), width=str(self.cellSize*8.25), x='0', y='0')
-        self.frame_1_2.place(anchor='nw', height=str(self.cellSize*2.75), width=str(
-            self.cellSize*8.25), x=str(self.cellSize*10.5), y=str(self.cellSize*1.5))
-        self.frame_1_2_3 = ttk.Frame(self.frame_1)
-        self.canvas_2_1 = tk.Canvas(self.frame_1_2_3)
-        self.canvas_2_1.config(bg='#000000')
-        self.canvas_2_1.place(anchor='nw', height=str(
-            self.cellSize*2.25), width=str(self.cellSize*2.25), x='0', y='0')
-        self.message_1 = tk.Label(
-            self.frame_1_2_3, font=(None, int(self.cellSize*0.275)))
-        self.message_1.config(bg='#000000', foreground='#00ff80', text='BPM')
-        self.message_1.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
-            self.cellSize*1.125), x=str(self.cellSize*1.125), y=str(self.cellSize*1.625))
-        self.heartrate = tk.Label(self.frame_1_2_3, font=(
-            None, int(self.cellSize*0.625)))
-        self.heartrate.config(bg='#000000', foreground='#00ff80', text='--')
-        self.heartrate.place(anchor='nw', height=str(self.cellSize), width=str(
-            self.cellSize*2.25), x='0', y=str(self.cellSize*0.675))
-        self.img2 = ImageTk.PhotoImage(Image.open(self.uiPath + 'pulse.png').resize(
-            (int(self.cellSize*0.575)+1, int(self.cellSize*0.575)+1), Image.ANTIALIAS))
-        self.canvas_2_1.create_image(
-            self.cellSize*0.1, self.cellSize*0.1, anchor=NW, image=self.img2)
-        self.frame_1_2_3.place(anchor='nw', height=str(self.cellSize*2.25), width=str(
-            self.cellSize*2.25), x=str(self.cellSize*10.5), y=str(self.cellSize*4.5))
-        self.frame_1_2_3_4 = ttk.Frame(self.frame_1)
-        self.canvas_2_3 = tk.Canvas(self.frame_1_2_3_4)
-        self.canvas_2_3.config(bg='#000000')
-        self.canvas_2_3.place(anchor='nw', height=str(
-            self.cellSize*2.25), width=str(self.cellSize*2.25), x='0', y='0')
-        self.message_1_3 = tk.Label(
-            self.frame_1_2_3_4, font=(None, int(self.cellSize*0.275)))
-        self.message_1_3.config(bg='#000000', foreground='#ff0000', text='F')
-        self.message_1_3.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
-            self.cellSize*0.575), x=str(self.cellSize*1.625), y=str(self.cellSize*1.625))
-        self.temperature = tk.Label(
-            self.frame_1_2_3_4, font=(None, int(self.cellSize*0.625)))
-        self.temperature.config(bg='#000000', foreground='#ff0000', text='--')
-        self.temperature.place(anchor='nw', height=str(self.cellSize), width=str(
-            self.cellSize*2.25), x='0', y=str(self.cellSize*0.675))
-        self.img3 = ImageTk.PhotoImage(Image.open(self.uiPath + 'temp.png').resize(
-            (int(self.cellSize*0.2875)+1, int(self.cellSize*0.575)+1), Image.ANTIALIAS))
-        self.canvas_2_3.create_image(
-            self.cellSize*0.1, self.cellSize*0.1, anchor=NW, image=self.img3)
-        self.frame_1_2_3_4.place(anchor='nw', height=str(self.cellSize*2.25), width=str(
-            self.cellSize*2.25), x=str(self.cellSize*13), y=str(self.cellSize*4.5))
-        self.frame_1_2_3_4_5 = ttk.Frame(self.frame_1)
-        self.canvas_2_4 = tk.Canvas(self.frame_1_2_3_4_5)
-        self.canvas_2_4.config(bg='#000000')
-        self.canvas_2_4.place(anchor='nw', height=str(
-            self.cellSize*2.25), width=str(self.cellSize*3.25), x='0', y='0')
-        self.message_1_4 = tk.Label(
-            self.frame_1_2_3_4_5, font=(None, int(self.cellSize*0.275)))
-        self.message_1_4.config(bg='#000000', foreground='#ff8040', text='KG')
-        self.message_1_4.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
-            self.cellSize*0.575), x=str(self.cellSize*2.625), y=str(self.cellSize*1.625))
-        self.weight = tk.Label(self.frame_1_2_3_4_5,
-                               font=(None, int(self.cellSize*0.45)))
-        self.weight.config(bg='#000000', foreground='#ff8040', text='-- to --')
-        self.weight.place(anchor='nw', height=str(self.cellSize), width=str(
-            self.cellSize*3.25), x='0', y=str(self.cellSize*0.675))
-        self.img4 = ImageTk.PhotoImage(Image.open(self.uiPath + 'weight.png').resize(
-            (int(self.cellSize*0.575)+1, int(self.cellSize*0.575)+1), Image.ANTIALIAS))
-        self.canvas_2_4.create_image(
-            self.cellSize*0.1, self.cellSize*0.1, anchor=NW, image=self.img4)
-        self.frame_1_2_3_4_5.place(anchor='nw', height=str(self.cellSize*2.25), width=str(
-            self.cellSize*3.25), x=str(self.cellSize*15.5), y=str(self.cellSize*4.5))
-        self.frame_1_2_3_4_5_6 = ttk.Frame(self.frame_1)
-        self.canvas_2_5 = tk.Canvas(self.frame_1_2_3_4_5_6)
-        self.canvas_2_5.config(bg='#000000')
-        self.canvas_2_5.place(anchor='nw', height=str(
-            self.cellSize*2.75), width=str(self.cellSize*2.25), x='0', y='0')
-        self.message_1_5 = tk.Label(
-            self.frame_1_2_3_4_5_6, font=(None, int(self.cellSize*0.275)))
-        self.message_1_5.config(bg='#000000', foreground='#ffff00', text='%')
-        self.message_1_5.place(anchor='nw', height=str(self.cellSize*0.575), width=str(
-            self.cellSize*0.575), x=str(self.cellSize*1.625), y=str(self.cellSize*2))
-        self.urinebag = tk.Label(self.frame_1_2_3_4_5_6, font=(
-            None, int(self.cellSize*0.625)))
+        self.frameHMap.place(anchor='nw', height=str(int(self.windowHeight/2.05)), width=str(
+            int(self.windowWidth/4.75)), x=str(int(self.windowWidth/3.06)), y=str(int(self.windowHeight/7.25)))
+        self.framePulsePlot = ttk.Frame(self.frameBg)
+        self.canvasPulsePlot = tk.Canvas(self.framePulsePlot)
+        self.canvasPulsePlot.config(bg='#000000')
+        self.canvasPulsePlot.place(anchor='nw', height=str(
+            int(self.windowHeight/3.9)), width=str(int(self.windowWidth/2.35)), x='0', y='0')
+        self.framePulsePlot.place(anchor='nw', height=str(int(self.windowHeight/3.9)), width=str(int(
+            self.windowWidth/2.35)), x=str(int(self.windowWidth/1.82)), y=str(int(self.windowHeight/7.25)))
+        self.framePulse = ttk.Frame(self.frameBg)
+        self.canvasPulse = tk.Canvas(self.framePulse)
+        self.canvasPulse.config(bg='#000000')
+        self.canvasPulse.place(anchor='nw', height=str(
+            int(self.windowHeight/4.832)), width=str(int(self.windowWidth/8.5)), x='0', y='0')
+        self.labelPulseUnit = tk.Label(self.framePulse, font=(
+            None, int((self.windowWidth+self.windowHeight)/125)))
+        self.labelPulseUnit.config(
+            bg='#000000', foreground='#00ff80', text='BPM')
+        self.labelPulseUnit.place(anchor='nw', height=str(int(self.windowHeight/30)), width=str(int(
+            self.windowWidth/23)), x=str(int(self.windowWidth/15)), y=str(int(self.windowHeight/6.05)))
+        labelPulse = tk.Label(self.framePulse, font=(
+            None, int((self.windowWidth+self.windowHeight)/50)))
+        labelPulse.config(bg='#000000', foreground='#00ff80', text='--')
+        labelPulse.place(anchor='nw', height=str(int(self.windowHeight/10)), width=str(
+            int(self.windowWidth/8.5)), x='0', y=str(int(self.windowHeight/17.5)))
+        self.imagePulse = ImageTk.PhotoImage(Image.open(self.uiPath + 'pulse.png').resize(
+            (int((self.windowWidth+self.windowHeight)/65)+1, int((self.windowWidth+self.windowHeight)/65)+1), Image.ANTIALIAS))
+        self.canvasPulse.create_image(
+            int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imagePulse)
+        self.framePulse.place(anchor='nw', height=str(int(self.windowHeight/4.832)), width=str(int(
+            self.windowWidth/8.5)), x=str(int(self.windowWidth/1.82)), y=str(int(self.windowHeight/2.39)))
+        self.frameTemp = ttk.Frame(self.frameBg)
+        self.canvasTemp = tk.Canvas(self.frameTemp)
+        self.canvasTemp.config(bg='#000000')
+        self.canvasTemp.place(anchor='nw', height=str(
+            int(self.windowHeight/4.832)), width=str(int(self.windowWidth/8.5)), x='0', y='0')
+        self.canvasTempUnit = tk.Label(self.frameTemp, font=(
+            None, int((self.windowWidth+self.windowHeight)/125)))
+        self.canvasTempUnit.config(
+            bg='#000000', foreground='#ff0000', text='F')
+        self.canvasTempUnit.place(anchor='nw', height=str(int(self.windowHeight/30)), width=str(int(
+            self.windowWidth/50)), x=str(int(self.windowWidth/11)), y=str(int(self.windowHeight/6.05)))
+        self.labelTemp = tk.Label(self.frameTemp, font=(
+            None, int((self.windowWidth+self.windowHeight)/50)))
+        self.labelTemp.config(bg='#000000', foreground='#ff0000', text='--')
+        self.labelTemp.place(anchor='nw', height=str(int(self.windowHeight/10)),
+                             width=str(int(self.windowWidth/8.5)), x='0', y=str(self.windowHeight/17.5))
+        self.imageTemp = ImageTk.PhotoImage(Image.open(self.uiPath + 'temp.png').resize(
+            (int((self.windowWidth+self.windowHeight)/65)+1, int((self.windowWidth+self.windowHeight)/65)+1), Image.ANTIALIAS))
+        self.canvasTemp.create_image(
+            int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imageTemp)
+        self.frameTemp.place(anchor='nw', height=str(int(self.windowHeight/4.832)), width=str(int(
+            self.windowWidth/8.5)), x=str(int(self.windowWidth/1.47)), y=str(int(self.windowHeight/2.39)))
+        self.frameWeight = ttk.Frame(self.frameBg)
+        self.canvasWeight = tk.Canvas(self.frameWeight)
+        self.canvasWeight.config(bg='#000000')
+        self.canvasWeight.place(anchor='nw', height=str(
+            int(self.windowHeight/4.832)), width=str(int(self.windowWidth/6.1)), x='0', y='0')
+        self.labelWeightUnit = tk.Label(self.frameWeight, font=(
+            None, int((self.windowWidth+self.windowHeight)/125)))
+        self.labelWeightUnit.config(
+            bg='#000000', foreground='#ff8040', text='KG')
+        self.labelWeightUnit.place(anchor='nw', height=str(int(self.windowHeight/30)), width=str(int(
+            self.windowWidth/32)), x=str(int(self.windowWidth/8)), y=str(int(self.windowHeight/6.05)))
+        self.labelWeight = tk.Label(self.frameWeight, font=(
+            None, int((self.windowWidth+self.windowHeight)/65)))
+        self.labelWeight.config(
+            bg='#000000', foreground='#ff8040', text='-- to --')
+        self.labelWeight.place(anchor='nw', height=str(int(self.windowHeight/10)), width=str(
+            int(self.windowWidth/6.1)), x='0', y=str(int(self.windowHeight/17.5)))
+        self.imageWeight = ImageTk.PhotoImage(Image.open(self.uiPath + 'weight.png').resize(
+            (int((self.windowWidth+self.windowHeight)/65)+1, int((self.windowWidth+self.windowHeight)/65)+1), Image.ANTIALIAS))
+        self.canvasWeight.create_image(
+            int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imageWeight)
+        self.frameWeight.place(anchor='nw', height=str(int(self.windowHeight/4.832)), width=str(
+            int(self.windowWidth/6.1)), x=str(int(self.windowWidth/1.233)), y=str(int(self.windowHeight/2.39)))
+        self.frameUBag = ttk.Frame(self.frameBg)
+        self.canvasUBag = tk.Canvas(self.frameUBag)
+        self.canvasUBag.config(bg='#000000')
+        self.canvasUBag.place(anchor='nw', height=str(
+            int(self.windowHeight/3.92)), width=str(int(self.windowWidth/8.5)), x='0', y='0')
+        self.labelUBagUnit = tk.Label(self.frameUBag, font=(
+            None, int((self.windowWidth+self.windowHeight)/125)))
+        self.labelUBagUnit.config(bg='#000000', foreground='#ffff00', text='%')
+        self.labelUBagUnit.place(anchor='nw', height=str(int(self.windowHeight/22.5)), width=str(int(
+            self.windowWidth/42.5)), x=str(int(self.windowWidth/11.5)), y=str(int(self.windowHeight/5.15)))
+        self.urinebag = tk.Label(self.frameUBag, font=(
+            None, int((self.windowWidth+self.windowHeight)/50)))
         self.urinebag.config(bg='#000000', foreground='#ffff00', text='--')
-        self.urinebag.place(anchor='nw', height=str(self.cellSize), width=str(
-            self.cellSize*2.25), x='0', y=str(self.cellSize*0.875))
-        self.img5 = ImageTk.PhotoImage(Image.open(self.uiPath + 'urineBag.png').resize(
-            (int(self.cellSize*0.2875)+1, int(self.cellSize*0.575)+1), Image.ANTIALIAS))
-        self.canvas_2_5.create_image(
-            self.cellSize*0.1, self.cellSize*0.1, anchor=NW, image=self.img5)
-        self.frame_1_2_3_4_5_6.place(anchor='nw', height=str(self.cellSize*2.75), width=str(
-            self.cellSize*2.25), x=str(self.cellSize*16.5), y=str(self.cellSize*7))
-        self.frame_1_2_7 = ttk.Frame(self.frame_1)
-        self.canvas_6_1 = tk.Canvas(self.frame_1_2_7)
-        self.canvas_6_1.config(bg='#000000')
-        self.canvas_6_1.place(anchor='nw', height=str(
-            self.cellSize*2.75), width=str(self.cellSize*10), x='0', y='0')
-        self.alert = tk.Label(self.frame_1_2_7, font=(
-            None, int(self.cellSize*0.35)))
-        self.alert.config(bg='#000000', foreground='#ffffff',
-                          text='Unoccupied')
-        self.alert.place(anchor='nw', height=str(self.cellSize*2.625), width=str(
-            self.cellSize*9.125), x=str(self.cellSize*0.725), y=str(self.cellSize*0.0475))
-        self.img6 = ImageTk.PhotoImage(Image.open(self.uiPath + 'alert.png').resize(
-            (int(self.cellSize*0.575)+1, int(self.cellSize*0.575)+1), Image.ANTIALIAS))
-        self.canvas_6_1.create_image(
-            self.cellSize*0.1, self.cellSize*0.1, anchor=NW, image=self.img6)
-        self.frame_1_2_7.place(anchor='nw', height=str(self.cellSize*2.75), width=str(
-            self.cellSize*10), x=str(self.cellSize*6.25), y=str(self.cellSize*7))
-        self.frame_1.place(anchor='nw', height=str(
+        self.urinebag.place(anchor='nw', height=str(int(self.windowHeight/10)), width=str(
+            int(self.windowWidth/8.5)), x='0', y=str(int(self.windowHeight/12.5)))
+        self.imageUBag = ImageTk.PhotoImage(Image.open(self.uiPath + 'urineBag.png').resize(
+            (int((self.windowWidth+self.windowHeight)/65)+1, int((self.windowWidth+self.windowHeight)/65)+1), Image.ANTIALIAS))
+        self.canvasUBag.create_image(
+            int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imageUBag)
+        self.frameUBag.place(anchor='nw', height=str(int(self.windowHeight/3.92)), width=str(
+            int(self.windowWidth/8.5)), x=str(int(self.windowWidth/1.166)), y=str(int(self.windowHeight/1.537)))
+        self.frameAlert = ttk.Frame(self.frameBg)
+        self.canvasAlert = tk.Canvas(self.frameAlert)
+        self.canvasAlert.config(bg='#000000')
+        self.canvasAlert.place(anchor='nw', height=str(
+            int(self.windowHeight/3.92)), width=str(int(self.windowWidth/1.93)), x='0', y='0')
+        self.labelAlert = tk.Label(self.frameAlert, font=(
+            None, int((self.windowWidth+self.windowHeight)/113)))
+        self.labelAlert.config(bg='#000000', foreground='#ffffff',
+                               text='Unoccupied')
+        self.labelAlert.place(anchor='nw', height=str(int(self.windowHeight/4.01)), width=str(int(
+            self.windowWidth/2.06)), x=str(int(self.windowWidth/32.5)), y=str(int(self.windowHeight/375)))
+        self.imageAlert = ImageTk.PhotoImage(Image.open(self.uiPath + 'alert.png').resize(
+            (int((self.windowWidth+self.windowHeight)/65)+1, int((self.windowWidth+self.windowHeight)/65)+1), Image.ANTIALIAS))
+        self.canvasAlert.create_image(
+            int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imageAlert)
+        self.frameAlert.place(anchor='nw', height=str(int(self.windowHeight/3.92)), width=str(int(
+            self.windowWidth/1.93)), x=str(int(self.windowWidth/3.06)), y=str(int(self.windowHeight/1.537)))
+        self.frameBg.place(anchor='nw', height=str(
             self.windowHeight), width=str(self.windowWidth), x='0', y='0')
 
-        self.mainwindow = self.frame_1
+        self.mainwindow = self.frameBg
 
         if (firstInit):
             self.startup = sa.WaveObject.from_wave_file(
@@ -188,6 +191,14 @@ class smartBedUI:
             self.master.geometry(
                 '{0}x{1}+0+0'.format(self.master.winfo_screenwidth(), self.master.winfo_screenheight()))
             self.master.bind('<Configure>', self.onResize)
+
+            logFile = open(self.uiPath+'log.json', 'a+')
+            if (logFile.read() != ''):
+                self.log = json.load(logFile)
+            else:
+                self.log = {}
+                self.log['bedLog'] = []
+            logFile.close()
 
             self.weightThread = Thread(target=self.updateWeight)
             self.weightThread.daemon = True
@@ -219,6 +230,9 @@ class smartBedUI:
         alertText = ['', '', '']
         alertMode = False
         ubRemoved = False
+        weightList = []
+        tempList = []
+        ubList = []
         self.withoutPat = 0
         withPat = [0, 0, 0, 0]
         self.bedMat = np.zeros((80, 36))
@@ -246,10 +260,6 @@ class smartBedUI:
             self.uiPath + 'unoccupied.wav')
         alertTone = sa.WaveObject.from_wave_file(self.uiPath + 'alert.wav')
         loopCount = 0
-        log = {}
-        log['bedLog'] = []
-        ubPercent = 0
-        tempReading = 98
         turnAlert = False
         patientTurned = False
 
@@ -267,10 +277,10 @@ class smartBedUI:
             try:
                 _, frame = cap.read()
                 cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                self.bgImg = ImageTk.PhotoImage(Image.fromarray(cv2image).resize(
+                self.imageBg = ImageTk.PhotoImage(Image.fromarray(cv2image).resize(
                     (self.windowWidth, self.windowHeight), Image.ANTIALIAS))
-                self.bg.itemconfig(self.bgOnCanvas, image=self.bgImg)
-                self.bg.image = self.bgImg
+                self.bg.itemconfig(self.bgOnCanvas, image=self.imageBg)
+                self.bg.image = self.imageBg
             except:
                 cap = cv2.VideoCapture(self.uiPath + bgVid)
 
@@ -278,10 +288,11 @@ class smartBedUI:
 
             if (self.weightDisconnected):
                 alertText[0] = ''
-                alertText[0] += 'Weight module disconnected!' + '\n'
+                alertText[0] += 'Body detection module disconnected!' + '\n'
 
                 wt = '-- to --'
-                self.weight.config(text=wt)
+                self.labelWeight.config(text=wt)
+                weightList = []
 
                 self.pressureMap.image = None
             else:
@@ -294,7 +305,9 @@ class smartBedUI:
 
                     if (wt == 0.00):
                         wt = '-- to --'
-                        self.weight.config(text=wt)
+                        self.labelWeight.config(text=wt)
+                        weightList = []
+                        tempList = []
                         alertText[0] += 'Unoccupied' + '\n'
 
                         if (self.isOccupied == True):
@@ -306,8 +319,14 @@ class smartBedUI:
 
                         self.isOccupied = False
                     else:
-                        wt = str(round(wt)-5) + ' to ' + str(round(wt)+5)
-                        self.weight.config(text=wt)
+                        weightList.append(wt)
+
+                        if (len(weightList) > 128):
+                            weightList.pop(0)
+
+                        wt = self.avg(weightList)
+                        wt = str(wt-5) + ' to ' + str(wt+5)
+                        self.labelWeight.config(text=wt)
                         alertText[0] += 'Patient on bed' + '\n'
 
                         if (self.isOccupied == False):
@@ -341,9 +360,9 @@ class smartBedUI:
                     pressureMapArray[:, :, 0] = np.clip(gaussian_filter((diffs.reshape(
                         6, 4) * 2).repeat(100, axis=0).repeat(100, axis=1), sigma=32), 0, 255)
                     self.pressureMapImg = ImageTk.PhotoImage(Image.fromarray(pressureMapArray, 'RGB').resize(
-                        (int(self.cellSize*5.5)+1, int(self.cellSize*8.25)+1), Image.ANTIALIAS))
+                        (int(self.windowWidth/3.5)+1, int(self.windowHeight/1.3)+1), Image.ANTIALIAS))
                     self.pressureMap.itemconfig(
-                        self.pressureMapOnCanvas, image=self.pressureMapImg)
+                        self.pMapOnCanvas, image=self.pressureMapImg)
                     self.pressureMap.image = self.pressureMapImg
 
             alertText[1] = ''
@@ -352,7 +371,8 @@ class smartBedUI:
                 alertText[1] += 'Temperature module disconnected!' + '\n'
 
                 tp = '--'
-                self.temperature.config(text=tp)
+                self.labelTemp.config(text=tp)
+                tempList = []
 
                 self.heatMap.image = None
             elif (self.tempValue != ''):
@@ -363,7 +383,7 @@ class smartBedUI:
 
                 if (not self.isOccupied):
                     tp = '--'
-                    self.temperature.config(text=tp)
+                    self.labelTemp.config(text=tp)
 
                     if (len(msg) == 1):
                         self.withoutPat = float(self.tempValue)
@@ -433,17 +453,22 @@ class smartBedUI:
                         for y in [0, 9, 18, 27]:
                             self.FillMatrix(x, y, x//14, y//9)
 
-                    tp = str(int(
-                        ((self.patTemp[0] * 0.5) + (self.patTemp[1] * 0.3) + (self.patTemp[2] * 0.2)) * self.tempScale))
-                    self.temperature.config(text=tp)
-                    tempReading = int(tp)
+                    tp = int(((self.patTemp[0] * 0.5) + (self.patTemp[1]
+                             * 0.3) + (self.patTemp[2] * 0.2)) * self.tempScale)
+                    tempList.append(tp)
+
+                    if (len(tempList) > 128):
+                        tempList.pop(0)
+
+                    tp = self.avg(tempList)
+                    self.labelTemp.config(text=str(tp))
 
                 heatMapArray[:, :, 0] = np.clip(gaussian_filter(
                     115-self.bedMatTemp, sigma=2), 0, 179).astype(np.int)
                 self.heatMapImg = ImageTk.PhotoImage(Image.fromarray(heatMapArray, 'HSV').resize(
-                    (int(self.cellSize*4)+1, int(self.cellSize*4*2.22)+1), Image.ANTIALIAS))
+                    (int(self.windowWidth/4.75)+1, int(self.windowHeight/2.05)+1), Image.ANTIALIAS))
                 self.heatMap.itemconfig(
-                    self.heatMapOnCanvas, image=self.heatMapImg)
+                    self.hMapOnCanvas, image=self.heatMapImg)
                 self.heatMap.image = self.heatMapImg
 
             alertText[2] = ''
@@ -453,19 +478,50 @@ class smartBedUI:
 
                 ub = '--'
                 self.urinebag.config(text=ub)
+                ubList = []
             else:
-                if (not self.isOccupied):
+                ub = self.urineBagValue
+
+                if (ub == '-1'):
                     ub = '--'
                     self.urinebag.config(text=ub)
+                    alertText[2] += 'Urine Bag removed! Please attach one.' + '\n'
+
+                    if (not ubRemoved):
+                        try:
+                            if (not playAlert.is_playing()):
+                                playAlert = alertTone.play()
+                        except:
+                            playAlert = alertTone.play()
+
+                        alertMode = True
+
+                    ubRemoved = True
                 else:
-                    ub = self.urineBagValue
+                    ubRemoved = False
 
-                    if (ub == '-1'):
-                        ub = '--'
-                        self.urinebag.config(text=ub)
-                        alertText[2] += 'Urine Bag removed! Please attach one.' + '\n'
+                    if (ub == 'PP'):
+                        alertText[2] += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
 
-                        if (not ubRemoved):
+                        try:
+                            if (not playAlert.is_playing()):
+                                playAlert = alertTone.play()
+                        except:
+                            playAlert = alertTone.play()
+
+                        alertMode = True
+                    elif (ub.isnumeric()):
+                        ubList.append(ub)
+
+                        if (len(ubList) > 128):
+                            ubList.pop(0)
+
+                        ub = self.avg(ubList)
+                        self.urinebag.config(text=str(ub))
+
+                        if (ub == '100'):
+                            alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
+
                             try:
                                 if (not playAlert.is_playing()):
                                     playAlert = alertTone.play()
@@ -474,12 +530,8 @@ class smartBedUI:
 
                             alertMode = True
 
-                        ubRemoved = True
-                    else:
-                        ubRemoved = False
-
-                        if (ub == 'PP'):
-                            alertText[2] += 'Patient hasn\'t urinated in last 6 hours!' + '\n'
+                        elif (int(ub) > 80):
+                            alertText[2] += 'Urine Bag almost full! Please drain / change it.' + '\n'
 
                             try:
                                 if (not playAlert.is_playing()):
@@ -488,53 +540,27 @@ class smartBedUI:
                                 playAlert = alertTone.play()
 
                             alertMode = True
-                        elif (ub.isnumeric()):
-                            self.urinebag.config(text=ub)
-                            ubPercent = int(float(ub))
-
-                            if (ub == '100'):
-                                alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
-
-                                try:
-                                    if (not playAlert.is_playing()):
-                                        playAlert = alertTone.play()
-                                except:
-                                    playAlert = alertTone.play()
-
-                                alertMode = True
-
-                            elif (int(float(ub)) > 80):
-                                alertText[2] += 'Urine Bag almost full! Please drain / change it.' + '\n'
-
-                                try:
-                                    if (not playAlert.is_playing()):
-                                        playAlert = alertTone.play()
-                                except:
-                                    playAlert = alertTone.play()
-
-                                alertMode = True
 
             combinedAlert = alertText[0] + alertText[1] + alertText[2]
             combinedAlert = combinedAlert.rstrip('\n')
-            self.alert.config(text=combinedAlert)
+            self.labelAlert.config(text=combinedAlert)
 
             if (self.isOccupied and (loopCount >= 119 or patientTurned)):
-                loopCount = 0
+                if (loopCount >= 119):
+                    loopCount = 0
 
-                log['bedLog'].append({
+                self.log['bedLog'].append({
                     'timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    'ubPercent': ubPercent,
-                    'tempReading': tempReading,
+                    'ubPercent': ub,
+                    'tempReading': tp,
                     'patientTurned': patientTurned,
                     'ubRemoved': ubRemoved
                 })
 
-                with open(self.uiPath+'log.txt', 'a') as logFile:
-                    json.dump(log, logFile)
-                    logFile.write('\n\n')
+                with open(self.uiPath+'log.json', 'w') as logFile:
+                    json.dump(self.log, logFile)
 
             patientTurned = False
-            log['bedLog'] = []
             time.sleep(0.042)
             loopCount += 1
 
@@ -545,7 +571,7 @@ class smartBedUI:
         while (True):
             try:
                 self.weightJSON = serialWeight.readline().decode().strip()
-                print('Weight Port:', self.weightJSON)
+                print('Body Detection Port:', self.weightJSON)
             except:
                 try:
                     serialWeight = serial.Serial('COM8')
@@ -593,6 +619,9 @@ class smartBedUI:
                     self.urineDisconnected = True
 
                 time.sleep(0.042)
+
+    def avg(self, lst):
+        return round(sum(lst)/len(lst))
 
     def FillMatrix(self, x, y, anchorX, anchorY):
         tempVal = self.sensorBedMat[anchorX][anchorY]
