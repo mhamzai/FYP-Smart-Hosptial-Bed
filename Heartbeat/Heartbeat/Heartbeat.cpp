@@ -1,5 +1,5 @@
-#include<iostream>
-#include<windows.h>
+#include <iostream>
+#include <windows.h>
 
 const int duration = 3;
 unsigned short data[64008 * duration];

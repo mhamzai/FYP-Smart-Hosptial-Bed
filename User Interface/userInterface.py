@@ -193,11 +193,14 @@ class smartBedUI:
             self.master.bind('<Configure>', self.onResize)
 
             logFile = open(self.uiPath+'log.json', 'a+')
-            if (logFile.read() != ''):
-                self.log = json.load(logFile)
+            logStr = logFile.readline()
+
+            if (logStr != ''):
+                self.log = json.load(logStr)
             else:
                 self.log = {}
                 self.log['bedLog'] = []
+
             logFile.close()
 
             self.weightThread = Thread(target=self.updateWeight)
@@ -260,7 +263,6 @@ class smartBedUI:
             self.uiPath + 'unoccupied.wav')
         alertTone = sa.WaveObject.from_wave_file(self.uiPath + 'alert.wav')
         loopCount = 0
-        turnAlert = False
         patientTurned = False
 
         while (True):
@@ -289,12 +291,17 @@ class smartBedUI:
             if (self.weightDisconnected):
                 alertText[0] = ''
                 alertText[0] += 'Body detection module disconnected!' + '\n'
+                self.isOccupied = False
 
                 wt = '-- to --'
                 self.labelWeight.config(text=wt)
                 weightList = []
 
-                self.pressureMap.image = None
+                self.pressureMapImg = ImageTk.PhotoImage(
+                    Image.open(self.uiPath + 'alert.png').resize((1, 1)))
+                self.pressureMap.itemconfig(
+                    self.pMapOnCanvas, image=self.pressureMapImg)
+                self.pressureMap.image = self.pressureMapImg
             else:
                 weightDict = self.weightJSON
 
@@ -307,7 +314,6 @@ class smartBedUI:
                         wt = '-- to --'
                         self.labelWeight.config(text=wt)
                         weightList = []
-                        tempList = []
                         alertText[0] += 'Unoccupied' + '\n'
 
                         if (self.isOccupied == True):
@@ -321,7 +327,7 @@ class smartBedUI:
                     else:
                         weightList.append(wt)
 
-                        if (len(weightList) > 128):
+                        if (len(weightList) > 8):
                             weightList.pop(0)
 
                         wt = self.avg(weightList)
@@ -340,7 +346,7 @@ class smartBedUI:
 
                         weightAlert = weightDict['msg']
 
-                        if (weightAlert != '' and not weightAlert.startswith('Patient Moved after')):
+                        if (weightAlert.startswith('Patient not Turned')):
                             alertText[0] += 'Patient hasn\'t been repositioned! Please do it.' + '\n'
 
                             try:
@@ -350,9 +356,7 @@ class smartBedUI:
                                 playAlert = alertTone.play()
 
                             alertMode = True
-                            turnAlert = True
-                        elif (turnAlert):
-                            turnAlert = False
+                        elif (weightAlert.startswith('Patient Moved')):
                             patientTurned = True
 
                     diffs = np.array(weightDict['diff']).astype(np.int)
@@ -374,7 +378,11 @@ class smartBedUI:
                 self.labelTemp.config(text=tp)
                 tempList = []
 
-                self.heatMap.image = None
+                self.heatMapImg = ImageTk.PhotoImage(
+                    Image.open(self.uiPath + 'alert.png').resize((1, 1)))
+                self.heatMap.itemconfig(
+                    self.hMapOnCanvas, image=self.heatMapImg)
+                self.heatMap.image = self.heatMapImg
             elif (self.tempValue != ''):
                 self.sensorBedMat = np.zeros((14, 4, 3))
                 self.bedMatTemp = np.zeros((80, 36))
@@ -384,6 +392,7 @@ class smartBedUI:
                 if (not self.isOccupied):
                     tp = '--'
                     self.labelTemp.config(text=tp)
+                    tempList = []
 
                     if (len(msg) == 1):
                         self.withoutPat = float(self.tempValue)
@@ -457,7 +466,7 @@ class smartBedUI:
                              * 0.3) + (self.patTemp[2] * 0.2)) * self.tempScale)
                     tempList.append(tp)
 
-                    if (len(tempList) > 128):
+                    if (len(tempList) > 32):
                         tempList.pop(0)
 
                     tp = self.avg(tempList)
@@ -511,15 +520,16 @@ class smartBedUI:
 
                         alertMode = True
                     elif (ub.isnumeric()):
-                        ubList.append(ub)
+                        ubPercent = int(ub)
+                        ubList.append(ubPercent)
 
-                        if (len(ubList) > 128):
+                        if (len(ubList) > 32):
                             ubList.pop(0)
 
-                        ub = self.avg(ubList)
-                        self.urinebag.config(text=str(ub))
+                        ubPercent = self.avg(ubList)
+                        self.urinebag.config(text=str(ubPercent))
 
-                        if (ub == '100'):
+                        if (ubPercent == 100):
                             alertText[2] += 'Urine Bag full! Please change it ASAP.' + '\n'
 
                             try:
@@ -530,7 +540,7 @@ class smartBedUI:
 
                             alertMode = True
 
-                        elif (int(ub) > 80):
+                        elif (ubPercent > 80):
                             alertText[2] += 'Urine Bag almost full! Please drain / change it.' + '\n'
 
                             try:
@@ -551,10 +561,10 @@ class smartBedUI:
 
                 self.log['bedLog'].append({
                     'timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    'ubPercent': ub,
-                    'tempReading': tp,
                     'patientTurned': patientTurned,
-                    'ubRemoved': ubRemoved
+                    'ubPercent': ubPercent,
+                    'ubRemoved': ubRemoved,
+                    'tempReading': tp
                 })
 
                 with open(self.uiPath+'log.json', 'w') as logFile:

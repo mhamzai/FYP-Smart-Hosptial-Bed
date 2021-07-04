@@ -1,1 +1,0 @@
-(self.windowWidth+self.windowHeight)/130

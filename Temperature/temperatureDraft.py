@@ -1,9 +1,9 @@
-import matplotlib.pyplot as plt
-import numpy as np
 import sys
-import serial
 import time
 
+import matplotlib.pyplot as plt
+import numpy as np
+import serial
 
 # np.set_printoptions(threshold=sys.maxsize)
 
@@ -66,7 +66,7 @@ while 1:
     msg = tempSensed.readline().decode()  # data received from IR sensor
     msg = np.array(msg.split(","), dtype=float)
 
-    if not isOccupied:  # variable from Ammaar
+    if not self.isOccupied:  # variable from Ammaar
         withoutPat = msg[1]  # without patient temperature
         continue
     else:
@@ -75,22 +75,22 @@ while 1:
     # for area 1 considering first row of sensors
     sensorArea = 0
     for i in range(0, 4):
-        if(activations[i]):
+        if(activated[i]):
             sensorArea += 121.5
 
     for i in range(0, 4):
-        if(activations[i]):
+        if(activated[i]):
             sensorBedMat[0][i] = (
                 withPat[0] - ((1-(sensorArea/(121.5*4))) * withoutPat)) / (sensorArea/(121.5*4))
 
     # for area 2 considering 2 rows of sensors
     sensorArea = 0
     for i in range(0, 8):
-        if(activations[i]):
+        if(activated[i]):
             sensorArea += 121.5
 
     for i in range(0, 8):
-        if(activations[i]):
+        if(activated[i]):
             if(i >= 4):
                 sensorBedMat[1][i-4] += (withPat[1] - ((1-(sensorArea/(121.5*4)))
                                          * withoutPat)) / (sensorArea/(121.5*4))
@@ -101,11 +101,11 @@ while 1:
     # for area 3 considering 2 rows of sensors
     sensorArea = 0
     for i in range(0, 8):
-        if(activations[i]):
+        if(activated[i]):
             sensorArea += 121.5
 
     for i in range(0, 8):
-        if(activations[i]):
+        if(activated[i]):
             if(i >= 4):
                 sensorBedMat[1][i-4] += (withPat[2] - ((1-(sensorArea/(121.5*4)))
                                          * withoutPat)) / (sensorArea/(121.5*4))

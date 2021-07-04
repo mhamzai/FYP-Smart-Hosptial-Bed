@@ -22,32 +22,37 @@ BSD license, all text above must be included in any redistribution
 //Adafruit_MPR121_STM32 cap = Adafruit_MPR121_STM32();
 Adafruit_MPR121_STM32 cap = Adafruit_MPR121_STM32();
 
-void setup() {
+void setup()
+{
 
-  while (!Serial);        // needed to keep leonardo/micro from starting too fast!
+  while (!Serial)
+    ; // needed to keep leonardo/micro from starting too fast!
 
   Serial.begin(9600);
-  Serial.println("Adafruit MPR121 Capacitive Touch sensor test"); 
-  
+  Serial.println("Adafruit MPR121 Capacitive Touch sensor test");
+
   // Default address is 0x5A, if tied to 3.3V its 0x5B
   // If tied to SDA its 0x5C and if SCL then 0x5D
-  if (!cap.begin(0x5A)) {
+  if (!cap.begin(0x5A))
+  {
     Serial.println("MPR121 not found, check wiring?");
-    while (1);
+    while (1)
+      ;
   }
   Serial.println("MPR121 found!");
 }
 
-void loop() {
+void loop()
+{
 
-  if(Serial.available())
+  if (Serial.available())
   {
     String msg = Serial.readString();
-    if(msg.indexOf("RECAL")!= -1)
+    if (msg.indexOf("RECAL") != -1)
     {
       int ind = msg.indexOf(" ");
       int Val = 0;
-      for(int i=ind+1; i < msg.length()-1; i++)
+      for (int i = ind + 1; i < msg.length() - 1; i++)
       {
         Val *= 10;
         Val += (msg[i] - 48);
@@ -56,18 +61,18 @@ void loop() {
       Serial.println("ReCalibrating...");
       Serial.flush();
       cap.reCalibrate(Val);
-      
     }
   }
-    
+
   // debugging info, what
   //Serial.print("\t\t\t\t\t\t\t\t\t\t\t\t\t 0x"); Serial.println(cap.touched(), HEX);
   //Serial.print("Filt: ");
-  for (uint8_t i=0; i<12; i++) {
+  for (uint8_t i = 0; i < 12; i++)
+  {
     //Serial.print(i+1); to be added if author doesn't conforms to standards
     Serial.print(cap.baselineData(i));
     //Serial.print(" (");
-    double C = calCap(cap.baselineData(i)); 
+    double C = calCap(cap.baselineData(i));
     //Serial.print(C, 5) ;
     //Serial.print("pF ");
     //Serial.print(calDistance(C), 5);
@@ -86,25 +91,24 @@ void loop() {
   }
   Serial.println();
 */
-  
+
   // put a delay so it isn't overwhelming
   delay(500);
 }
 
-
 double calCap(int pinVal)
 {
-  double I = 32.0;//0.000016;
-  double T = 8.0; //0.0000005;
+  double I = 32.0; //0.000016;
+  double T = 8.0;  //0.0000005;
   double Vdd = 5.0;
-  double V = (pinVal * Vdd)/1024;
+  double V = (pinVal * Vdd) / 1024;
   //double V = (0.001855 * double(pinVal)) + 0.7;    // for 3.3V
   //double V = (0.003515625 * double(pinVal)) + 0.7;   // for 5V
   //Serial.print(V, 5);
   //Serial.print("V ");
 
   //double cap = double(I*T)/ double(V);
-  double cap = (I*T*1024) / (pinVal*Vdd);
+  double cap = (I * T * 1024) / (pinVal * Vdd);
 
   return cap;
 }
@@ -113,7 +117,7 @@ double calDistance(double C)
 {
   // capacitance is coming in as pF
   double A = 0.016129;
-  double Er = 2*2.73;
-  double d = 8.85*Er*(A/C);
+  double Er = 2 * 2.73;
+  double d = 8.85 * Er * (A / C);
   return d;
 }
