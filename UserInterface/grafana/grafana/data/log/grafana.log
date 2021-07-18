@@ -1,0 +1,294 @@
+t=2021-07-19T00:25:07+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=7 size=0 referer=
+t=2021-07-19T00:25:59+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=3 size=0 referer=
+t=2021-07-19T00:26:40+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T00:26:40+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T00:26:40+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T00:26:40+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T00:26:40+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T00:26:40+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T00:26:40+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T00:26:40+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T00:26:40+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T00:26:40+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T00:26:40+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T00:26:41+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=18.1102ms
+t=2021-07-19T00:26:41+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T00:26:41+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T00:26:41+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T00:26:41+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T00:26:41+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T00:27:11+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=19 size=0 referer=
+t=2021-07-19T00:44:03+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T00:44:03+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T00:44:03+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T00:44:03+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T00:44:03+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T00:44:03+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T00:44:03+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T00:44:03+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T00:44:03+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T00:44:03+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T00:44:03+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T00:44:03+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=1.9989ms
+t=2021-07-19T00:44:03+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T00:44:03+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T00:44:03+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T00:44:03+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T00:44:03+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T00:44:08+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=115 size=0 referer=
+t=2021-07-19T00:59:19+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T00:59:19+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T00:59:19+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T00:59:19+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T00:59:19+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T00:59:19+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T00:59:19+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T00:59:19+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T00:59:19+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T00:59:19+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T00:59:19+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T00:59:19+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=2.0004ms
+t=2021-07-19T00:59:19+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T00:59:19+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T00:59:19+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T00:59:20+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T00:59:20+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T00:59:21+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=288 size=0 referer=
+t=2021-07-19T01:01:59+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:01:59+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:01:59+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:01:59+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:01:59+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:01:59+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:01:59+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:01:59+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:01:59+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:01:59+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:02:00+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:02:00+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=62.4194ms
+t=2021-07-19T01:02:00+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:02:01+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:02:01+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:02:01+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:02:01+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:02:08+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=5 size=0 referer=
+t=2021-07-19T01:03:36+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:03:36+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:03:36+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:03:36+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:03:36+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:03:36+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:03:36+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:03:36+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:03:36+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:03:36+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:03:36+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:03:36+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=3.9971ms
+t=2021-07-19T01:03:36+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:03:37+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:03:37+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:03:37+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:03:37+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:03:38+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=6 size=0 referer=
+t=2021-07-19T01:06:34+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:06:34+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:06:34+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:06:34+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:06:34+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:06:34+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:06:34+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:06:34+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:06:34+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:06:34+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:06:34+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:06:34+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=2.0026ms
+t=2021-07-19T01:06:34+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:06:35+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:06:35+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:06:35+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:06:35+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:06:51+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=193 size=0 referer=
+t=2021-07-19T01:11:07+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:11:07+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:11:07+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:11:07+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:11:07+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:11:07+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:11:07+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:11:07+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:11:07+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:11:07+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:11:07+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:11:08+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=0s
+t=2021-07-19T01:11:08+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:11:08+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:11:08+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:11:08+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:11:08+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:11:09+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=0 size=0 referer=
+t=2021-07-19T01:15:32+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:15:32+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:15:32+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:15:32+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:15:32+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:15:32+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:15:32+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:15:32+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:15:32+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:15:32+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:15:32+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:15:32+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=2.9974ms
+t=2021-07-19T01:15:32+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:15:33+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:15:33+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:15:33+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:15:33+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:15:39+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=285 size=0 referer=
+t=2021-07-19T01:15:58+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=2 size=0 referer=
+t=2021-07-19T01:16:33+0500 lvl=info msg="Initialized channel handler" logger=live channel=grafana/dashboard/uid/m2fujei7k address=grafana/dashboard/uid/m2fujei7k
+t=2021-07-19T01:18:50+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\n  |> range(start: 2021-07-18T20:13:50Z, stop:2021-07-18T20:18:50Z)\n  |> filter(fn: (r) =>\n    r._measurement == \"example-measurement\" and\n    r._field == \"example-field\"\n  )"
+t=2021-07-19T01:18:50+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=167 size=421 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:19:30+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\r\n  |> range(start: 2021-07-18T20:14:30Z, stop:2021-07-18T20:19:30Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percent\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:19:30+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=131 size=426 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:19:45+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\r\n  |> range(start: 2021-07-18T20:14:45Z, stop:2021-07-18T20:19:45Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percent\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:19:45+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=249 size=426 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:19:58+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\r\n  |> range(start: 2021-07-18T20:14:58Z, stop:2021-07-18T20:19:58Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percentage\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:19:58+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=83 size=429 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:20:11+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\r\n  |> range(start: 2021-07-18T20:15:11Z, stop:2021-07-18T20:20:11Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percentage\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:20:11+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=46 size=429 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:20:30+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/smart_hospital_bed\"" query="from(bucket: \"db/smart_hospital_bed\")\r\n  |> range(start: 2021-07-18T20:15:30Z, stop:2021-07-18T20:20:30Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percentage\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:20:30+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=42 size=461 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:20:37+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"smart_hospital_bed\"" query="from(bucket: \"smart_hospital_bed\")\r\n  |> range(start: 2021-07-18T20:15:36Z, stop:2021-07-18T20:20:36Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percentage\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:20:37+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=263 size=455 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:31:04+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:31:04+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:31:04+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:31:04+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:31:04+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:31:04+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:31:04+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:31:04+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:31:04+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:31:04+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:31:05+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:31:05+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=3.99ms
+t=2021-07-19T01:31:05+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:31:06+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:31:06+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:31:06+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:31:06+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:31:24+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=2 size=0 referer=
+t=2021-07-19T01:31:25+0500 lvl=info msg="Initialized channel handler" logger=live channel=grafana/dashboard/uid/m2fujei7k address=grafana/dashboard/uid/m2fujei7k
+t=2021-07-19T01:31:25+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": context canceled" query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:26:25Z, stop:2021-07-18T20:31:25Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:31:25+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=227 size=427 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:31:27+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:26:25Z, stop:2021-07-18T20:31:25Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:31:28+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=3364 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:31:32+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:26:30Z, stop:2021-07-18T20:31:30Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:31:32+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2499 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:31:37+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:26:35Z, stop:2021-07-18T20:31:35Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:31:37+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2790 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:31:42+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:26:40Z, stop:2021-07-18T20:31:40Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:31:42+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2770 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:31:47+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:26:45Z, stop:2021-07-18T20:31:45Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:31:47+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2779 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:34:19+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\n  |> range(start: 2021-07-18T20:29:18Z, stop:2021-07-18T20:34:18Z)\n  |> filter(fn: (r) =>\n    r._measurement == \"example-measurement\" and\n    r._field == \"example-field\"\n  )"
+t=2021-07-19T01:34:19+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=150 size=421 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:34:47+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\n  |> range(start: 2021-07-18T20:29:47Z, stop:2021-07-18T20:34:47Z)\n  |> filter(fn: (r) =>\n    r._measurement == \"example-measurement\" and\n    r._field == \"example-field\"\n  )"
+t=2021-07-19T01:34:47+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=117 size=421 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:34:52+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"db/rp\"" query="from(bucket: \"db/rp\")\r\n  |> range(start: 2021-07-18T20:29:52Z, stop:2021-07-18T20:34:52Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"example-measurement\" and\r\n    r._field == \"example-field\"\r\n  )"
+t=2021-07-19T01:34:52+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=28 size=431 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:36:11+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:36:11+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:36:11+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:36:11+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:36:11+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:36:11+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:36:11+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:36:11+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:36:11+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:36:11+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:36:11+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:36:11+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=2.9975ms
+t=2021-07-19T01:36:11+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:36:11+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:36:11+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:36:11+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:36:12+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:36:18+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=2 size=0 referer=
+t=2021-07-19T01:36:18+0500 lvl=info msg="Initialized channel handler" logger=live channel=grafana/dashboard/uid/m2fujei7k address=grafana/dashboard/uid/m2fujei7k
+t=2021-07-19T01:37:57+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="not found: failed to initialize execute state: could not find bucket \"Smart\"" query="from(bucket: \"Smart\")\r\n  |> range(start: 2021-07-18T20:32:57Z, stop:2021-07-18T20:37:57Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"example-measurement\" and\r\n    r._field == \"example-field\"\r\n  )"
+t=2021-07-19T01:37:58+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=476 size=431 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&editPanel=2"
+t=2021-07-19T01:38:30+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": context canceled" query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:33:29Z, stop:2021-07-18T20:38:29Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:38:30+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=535 size=427 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s"
+t=2021-07-19T01:48:08+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T01:48:08+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T01:48:08+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T01:48:08+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T01:48:08+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T01:48:08+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T01:48:08+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T01:48:08+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T01:48:08+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T01:48:08+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T01:48:08+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T01:48:08+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=8.9987ms
+t=2021-07-19T01:48:09+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T01:48:10+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T01:48:10+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T01:48:10+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T01:48:10+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T01:48:14+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:08Z, stop:2021-07-18T20:48:08Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:14+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=3273 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:20+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=[::1] time_ms=9 size=0 referer=
+t=2021-07-19T01:48:20+0500 lvl=info msg="Initialized channel handler" logger=live channel=grafana/dashboard/uid/m2fujei7k address=grafana/dashboard/uid/m2fujei7k
+t=2021-07-19T01:48:22+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:19Z, stop:2021-07-18T20:48:19Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:22+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2932 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:26+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:23Z, stop:2021-07-18T20:48:23Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:26+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2825 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:31+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:28Z, stop:2021-07-18T20:48:28Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:31+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=3145 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:35+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:33Z, stop:2021-07-18T20:48:33Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:35+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2519 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:41+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:38Z, stop:2021-07-18T20:48:38Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:41+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2846 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:43+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:40Z, stop:2021-07-18T20:48:40Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:43+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2916 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:46+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:43Z, stop:2021-07-18T20:48:43Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:46+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2618 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:46+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:43Z, stop:2021-07-18T20:48:43Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:46+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2848 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:51+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:48Z, stop:2021-07-18T20:48:48Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:51+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2731 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:51+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:48Z, stop:2021-07-18T20:48:48Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:51+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2787 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:56+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:53Z, stop:2021-07-18T20:48:53Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:56+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2851 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T01:48:56+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T20:43:53Z, stop:2021-07-18T20:48:53Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"smart_hospital_bed\" and\r\n    r._field == \"value\"\r\n  )"
+t=2021-07-19T01:48:56+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=[::1] time_ms=2936 size=518 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T02:08:20+0500 lvl=info msg="Starting Grafana" logger=server version=8.0.6 commit=68fe9e3431 branch=HEAD compiled=2021-07-15T12:49:19+0500
+t=2021-07-19T02:08:20+0500 lvl=info msg="Config loaded from" logger=settings file=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana/conf/defaults.ini
+t=2021-07-19T02:08:20+0500 lvl=info msg="Path Home" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana
+t=2021-07-19T02:08:20+0500 lvl=info msg="Path Data" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data
+t=2021-07-19T02:08:20+0500 lvl=info msg="Path Logs" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\log
+t=2021-07-19T02:08:20+0500 lvl=info msg="Path Plugins" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\plugins
+t=2021-07-19T02:08:20+0500 lvl=info msg="Path Provisioning" logger=settings path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\conf\\provisioning
+t=2021-07-19T02:08:20+0500 lvl=info msg="App mode production" logger=settings
+t=2021-07-19T02:08:20+0500 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2021-07-19T02:08:20+0500 lvl=warn msg="SQLite database file has broader permissions than it should" logger=sqlstore path=C:\\Users\\ammar\\OneDrive\\Documents\\GitHub\\FYP-Smart-Hosptial-Bed\\UserInterface\\grafana\\grafana\\data\\grafana.db mode=-rw-rw-rw- expected=-rw-r-----
+t=2021-07-19T02:08:20+0500 lvl=info msg="Starting DB migrations" logger=migrator
+t=2021-07-19T02:08:20+0500 lvl=info msg="migrations completed" logger=migrator performed=0 skipped=330 duration=43.0787ms
+t=2021-07-19T02:08:20+0500 lvl=info msg="Starting plugin search" logger=plugins
+t=2021-07-19T02:08:21+0500 lvl=info msg="Registering plugin" logger=plugins id=input
+t=2021-07-19T02:08:21+0500 lvl=info msg="Registering plugin" logger=plugins id=grafana-plugin-admin-app
+t=2021-07-19T02:08:21+0500 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+t=2021-07-19T02:08:21+0500 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2021-07-19T02:08:22+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=GET path=/api/live/ws status=0 remote_addr=127.0.0.1 time_ms=465 size=0 referer=
+t=2021-07-19T02:08:23+0500 lvl=info msg="Initialized channel handler" logger=live channel=grafana/dashboard/uid/m2fujei7k address=grafana/dashboard/uid/m2fujei7k
+t=2021-07-19T02:08:25+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T21:03:21Z, stop:2021-07-18T21:08:21Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percentage\" and\r\n    r._field == \"Percentage filled\"\r\n  )"
+t=2021-07-19T02:08:25+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=127.0.0.1 time_ms=3261 size=537 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T02:08:25+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": dial tcp [::1]:8086: connectex: No connection could be made because the target machine actively refused it." query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T21:03:21Z, stop:2021-07-18T21:08:21Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"patient_turn_intervals\" and\r\n    r._field == \"Seconds since last turn\"\r\n  )"
+t=2021-07-19T02:08:25+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=127.0.0.1 time_ms=3361 size=540 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T02:09:02+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": context canceled" query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T21:04:01Z, stop:2021-07-18T21:09:01Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"patient_turn_intervals\" and\r\n    r._field == \"Seconds since last turn\"\r\n  )"
+t=2021-07-19T02:09:02+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=127.0.0.1 time_ms=808 size=449 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
+t=2021-07-19T02:09:03+0500 lvl=warn msg="Flux query failed" logger=tsdb.influx_flux err="Post \"http://localhost:8086/api/v2/query?org=Slim\": context canceled" query="from(bucket: \"Smart Hospital Bed\")\r\n  |> range(start: 2021-07-18T21:04:01Z, stop:2021-07-18T21:09:01Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"urine_bag_fill_percentage\" and\r\n    r._field == \"Percentage filled\"\r\n  )"
+t=2021-07-19T02:09:03+0500 lvl=info msg="Request Completed" logger=context userId=1 orgId=1 uname=AmmarAsim40 method=POST path=/api/ds/query status=400 remote_addr=127.0.0.1 time_ms=1780 size=446 referer="http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&from=now-5m&to=now&refresh=5s"
