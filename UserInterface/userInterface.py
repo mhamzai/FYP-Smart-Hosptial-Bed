@@ -4,6 +4,7 @@ import sys
 import time
 import tkinter as tk
 import tkinter.ttk as ttk
+import webbrowser
 from datetime import datetime
 from threading import *
 from tkinter import *
@@ -146,23 +147,23 @@ class smartBedUI:
         self.canvasUBag = tk.Canvas(self.frameUBag)
         self.canvasUBag.config(bg='#000000')
         self.canvasUBag.place(anchor='nw', height=str(
-            int(self.windowHeight/3.92)), width=str(int(self.windowWidth/8.5)), x='0', y='0')
+            int(self.windowHeight/4.832)), width=str(int(self.windowWidth/8.5)), x='0', y='0')
         self.labelUBagUnit = tk.Label(self.frameUBag, font=(
             None, int((self.windowWidth+self.windowHeight)/125)))
         self.labelUBagUnit.config(bg='#000000', foreground='#ffff00', text='%')
-        self.labelUBagUnit.place(anchor='nw', height=str(int(self.windowHeight/22.5)), width=str(int(
-            self.windowWidth/42.5)), x=str(int(self.windowWidth/11.5)), y=str(int(self.windowHeight/5.15)))
+        self.labelUBagUnit.place(anchor='nw', height=str(int(self.windowHeight/30)), width=str(int(
+            self.windowWidth/50)), x=str(int(self.windowWidth/11)), y=str(int(self.windowHeight/6.05)))
         self.urinebag = tk.Label(self.frameUBag, font=(
             None, int((self.windowWidth+self.windowHeight)/50)))
         self.urinebag.config(bg='#000000', foreground='#ffff00', text='--')
-        self.urinebag.place(anchor='nw', height=str(int(self.windowHeight/10)), width=str(
-            int(self.windowWidth/8.5)), x='0', y=str(int(self.windowHeight/12.5)))
+        self.urinebag.place(anchor='nw', height=str(int(self.windowHeight/10)),
+                            width=str(int(self.windowWidth/8.5)), x='0', y=str(self.windowHeight/17.5))
         self.imageUBag = ImageTk.PhotoImage(Image.open(self.uiPath + 'urineBag.png').resize(
             (int((self.windowWidth+self.windowHeight)/65)+1, int((self.windowWidth+self.windowHeight)/65)+1), Image.ANTIALIAS))
         self.canvasUBag.create_image(
             int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imageUBag)
-        self.frameUBag.place(anchor='nw', height=str(int(self.windowHeight/3.92)), width=str(
-            int(self.windowWidth/8.5)), x=str(int(self.windowWidth/1.166)), y=str(int(self.windowHeight/1.537)))
+        self.frameUBag.place(anchor='nw', height=str(int(self.windowHeight/4.832)), width=str(int(
+            self.windowWidth/8.5)), x=str(int(self.windowWidth/1.166)), y=str(int(self.windowHeight/1.57)))
         self.frameAlert = ttk.Frame(self.frameBg)
         self.canvasAlert = tk.Canvas(self.frameAlert)
         self.canvasAlert.config(bg='#000000')
@@ -180,6 +181,27 @@ class smartBedUI:
             int(self.windowWidth/225), int(self.windowHeight/125), anchor=NW, image=self.imageAlert)
         self.frameAlert.place(anchor='nw', height=str(int(self.windowHeight/3.92)), width=str(int(
             self.windowWidth/1.93)), x=str(int(self.windowWidth/3.06)), y=str(int(self.windowHeight/1.537)))
+        self.frameHistory = ttk.Frame(self.frameBg)
+        self.canvasHistory = tk.Canvas(self.frameHistory)
+        self.canvasHistory.config(bg='#000000')
+        self.canvasHistory.place(anchor='nw', height=str(
+            int(self.windowHeight/20)), width=str(int(self.windowWidth/8.5)), x='0', y='0')
+        self.labelHistory = tk.Label(self.frameHistory, font=(
+            None, int((self.windowWidth+self.windowHeight)/150)))
+        self.labelHistory.config(bg='#000000', foreground='#ffffff',
+                                 text='History')
+        self.labelHistory.place(anchor='nw', height=str(int(self.windowHeight/22.5)), width=str(int(
+            self.windowWidth/11.1)), x=str(int(self.windowWidth/38)), y=str(int(self.windowHeight/375)))
+        self.labelHistory.bind("<Key>", self.key)
+        self.labelHistory.bind("<Button-1>", self.callback)
+        self.imageHistory = ImageTk.PhotoImage(Image.open(self.uiPath + 'history.png').resize(
+            (int((self.windowWidth+self.windowHeight)/87.5)+1, int((self.windowWidth+self.windowHeight)/87.5)+1), Image.ANTIALIAS))
+        self.canvasHistory.create_image(
+            int(self.windowWidth/225), int(self.windowHeight/100), anchor=NW, image=self.imageHistory)
+        self.canvasHistory.bind("<Key>", self.key)
+        self.canvasHistory.bind("<Button-1>", self.callback)
+        self.frameHistory.place(anchor='nw', height=str(int(self.windowHeight/20)), width=str(
+            int(self.windowWidth/8.5)), x=str(int(self.windowWidth/1.166)), y=str(int(self.windowHeight/1.17)))
         self.frameBg.place(anchor='nw', height=str(
             self.windowHeight), width=str(self.windowWidth), x='0', y='0')
 
@@ -500,7 +522,7 @@ class smartBedUI:
                 ubList = []
 
                 if (self.isOccupied and ubPercent != lastUBPercent):
-                    self.writeToDb('urine_bag_fill_percentage', ubPercent)
+                    self.writeToDb('urine_bag_filled_percentage', ubPercent)
 
                 lastUBPercent = ubPercent
             else:
@@ -512,7 +534,8 @@ class smartBedUI:
                     ubPercent = int(ub)
 
                     if (self.isOccupied and ubPercent != lastUBPercent):
-                        self.writeToDb('urine_bag_fill_percentage', ubPercent)
+                        self.writeToDb(
+                            'urine_bag_filled_percentage', ubPercent)
 
                     lastUBPercent = ubPercent
 
@@ -541,7 +564,7 @@ class smartBedUI:
 
                         if (self.isOccupied and ubPercent != lastUBPercent):
                             self.writeToDb(
-                                'urine_bag_fill_percentage', ubPercent)
+                                'urine_bag_filled_percentage', ubPercent)
 
                         lastUBPercent = ubPercent
 
@@ -665,6 +688,13 @@ class smartBedUI:
                     else:
                         self.bedMatTemp[i][j] = self.withoutPat
 
+    def key(self, event):
+        print('pressed', repr(event.char))
+
+    def callback(self, event):
+        webbrowser.open(
+            'http://localhost:3000/d/m2fujei7k/smart-hospital-bed?orgId=1&refresh=5s')
+
     def influxdb(self):
         os.system(self.uiPath + 'influxdb\\influxdb2-2.0.7-windows-amd64\\influxd')
 
@@ -675,7 +705,7 @@ class smartBedUI:
     def writeToDb(self, measurement, fieldValue):
         if (measurement == 'patient_turn_intervals'):
             fieldKey = 'Seconds since last turn'
-        elif (measurement == 'urine_bag_fill_percentage'):
+        elif (measurement == 'urine_bag_filled_percentage'):
             fieldKey = 'Percentage filled'
 
         try:
